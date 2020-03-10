@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -11,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface
 {
     /**
+     * @var integer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -18,11 +20,13 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
     /**
+     * @var array
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -34,35 +38,49 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $phone;
 
     /**
+     * @var boolean
      * @ORM\Column(type="boolean")
      */
     private $expires;
 
     /**
+     * @var dateTime
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $expiresAt;
 
     /**
+     * @var integer
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $token;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -74,6 +92,7 @@ class User implements UserInterface
      * A visual identifier that represents this user.
      *
      * @see UserInterface
+     * @return string
      */
     public function getUsername(): string
     {
@@ -81,6 +100,7 @@ class User implements UserInterface
     }
 
     /**
+     * @return array
      * @see UserInterface
      */
     public function getRoles(): array
@@ -92,6 +112,10 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -100,6 +124,7 @@ class User implements UserInterface
     }
 
     /**
+     * @return string
      * @see UserInterface
      */
     public function getPassword(): string
@@ -107,6 +132,10 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -115,6 +144,7 @@ class User implements UserInterface
     }
 
     /**
+     * @return string|void|null
      * @see UserInterface
      */
     public function getSalt()
@@ -131,11 +161,18 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPhone(): ?string
     {
         return $this->phone;
     }
 
+    /**
+     * @param string|null $phone
+     * @return $this
+     */
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
@@ -143,11 +180,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getExpires(): ?bool
     {
         return $this->expires;
     }
 
+    /**
+     * @param bool $expires
+     * @return $this
+     */
     public function setExpires(bool $expires): self
     {
         $this->expires = $expires;
@@ -155,11 +199,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getExpiresAt(): ?\DateTimeInterface
     {
         return $this->expiresAt;
     }
 
+    /**
+     * @param \DateTimeInterface|null $expiresAt
+     * @return $this
+     */
     public function setExpiresAt(?\DateTimeInterface $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
@@ -167,11 +218,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getToken(): ?string
     {
         return $this->token;
     }
 
+    /**
+     * @param string|null $token
+     * @return $this
+     */
     public function setToken(?string $token): self
     {
         $this->token = $token;
