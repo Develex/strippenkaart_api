@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,13 +55,22 @@ class UserController extends AbstractController
     public
     function createUser(Request $request)
     {
-        if (!$request->query->has('mail') && !$request->query->has('password')) {
-            $error = ["error" => "Missing required parameters"];
+        if (!$request->request->has('mail') && !$request->request->has('password')) {
+            $error = ["error" => "Missing required parameters",
+                "mail" => $request->request->has('mail'),
+                "password" => $request->request->has('password')];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
         }
 
+        $user = new User();
+        $user->setEmail($request->get('mail'));
+        $user->setPassword($request->get('password'));
+        $user->setExpires(false);
+        $this->em->persist($user);
+        $this->em->flush();
 
-        return new Response("POST", Response::HTTP_OK);
+
+        return new Response(json_encode($user), Response::HTTP_OK);
     }
 
     /**
@@ -96,8 +106,9 @@ class UserController extends AbstractController
     public
     function getUsers(Request $request)
     {
-        $users = $this->repository->findAll();
+        $users = $this->repository->findBy($request->query->all());
+        $response = $this->serializer->serialize($users, 'json');
 
-        return new Response(json_encode($users), Response::HTTP_OK);
+        return new Response($response, Response::HTTP_OK);
     }
 }
