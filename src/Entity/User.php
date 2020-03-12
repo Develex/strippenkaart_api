@@ -62,6 +62,19 @@ class User implements UserInterface
     private $token;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->active = true;
+    }
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -91,12 +104,12 @@ class User implements UserInterface
     /**
      * A visual identifier that represents this user.
      *
-     * @see UserInterface
      * @return string
+     * @see UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -129,7 +142,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     /**
@@ -233,6 +246,25 @@ class User implements UserInterface
     public function setToken(?string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     * @return $this
+     */
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }
