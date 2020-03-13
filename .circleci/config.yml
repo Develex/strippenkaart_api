@@ -7,7 +7,6 @@ jobs:
       - image: cicleci/php:7.4-node-browsers
     steps:
       - checkout
-
       - run:
           name: "Prepare Environment"
           command: |
