@@ -9,8 +9,7 @@ jobs:
         environment:
           MYSQL_HOST: 127.0.0.1
           MYSQL_DB: symfony
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
 
     working_directory: ~/symfony
 
