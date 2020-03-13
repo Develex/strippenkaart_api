@@ -21,7 +21,6 @@ jobs:
           name: "Prepare Environment"
           command: |
             sudo apt update
-            sudo apt install -y mysql-client
             sudo docker-php-ext-install zip
       - restore_cache:
           keys:
