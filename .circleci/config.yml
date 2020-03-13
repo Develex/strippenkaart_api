@@ -5,13 +5,12 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.3-node-browsers
-      - image: mysql:5.7
+      - image: circleci/mysql:5.7
         environment:
           MYSQL_HOST: 127.0.0.1
           MYSQL_DB: symfony
           MYSQL_USER: root
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_PASSWORD:
+          MYSQL_PASSWORD: root
 
     working_directory: ~/symfony
 
