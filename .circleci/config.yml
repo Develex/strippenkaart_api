@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cicleci/php:7.4-node-browsers
+      - image: circleci/php:7.3-node-browsers
     steps:
       - checkout
       - run:
