@@ -8,6 +8,7 @@ jobs:
       - image: circleci/mysql:5.7
         environment:
           MYSQL_HOST: 127.0.0.1
+          MYSQL_USER: tester
           MYSQL_ROOT_PASSWORD: root
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
 
