@@ -38,7 +38,7 @@ jobs:
       - run:
           name: "Create database and run migration"
           command: |
-
+            find ${HOME}
             php bin/console doctrine:database:create
             php bin/console doctrine:migrations:migrate
       - run:
