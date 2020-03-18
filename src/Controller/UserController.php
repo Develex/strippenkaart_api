@@ -72,31 +72,32 @@ class UserController extends AbstractController
      */
     public function createUser(Request $request)
     {
-        if (!$request->request->has('mail') || !$request->request->has('password')) {
+        $data = json_decode($request->getContent());
+        if (!isset($data->email) || !isset($data->password)) {
             $error = [
                 "error" => "Missing required parameters",
-                "mail" => $request->request->has('mail'),
-                "password" => $request->request->has('password')];
+                "email" => isset($data->email),
+                "password" => isset($data->password)];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
         }
-        if ($this->repository->findBy(['email' => $request->get('mail')])) {
+        if ($this->repository->findBy(['email' => $data->email])) {
             $error = [
                 "error" => "An account already exists with this email address",
-                "mail" => $request->request->has('mail'),
-                "password" => $request->request->has('password')];
+                "email" => isset($data->email),
+                "password" => isset($data->password)];
             return new Response(json_encode($error), Response::HTTP_CONFLICT);
         }
 
         $user = new User();
-        $user->setEmail($request->get('mail'));
-        $encodedPassword = $this->encoder->encodePassword($user, $request->get('password'));
+        $user->setEmail($data->email);
+        $encodedPassword = $this->encoder->encodePassword($user, $data->password);
         $user->setPassword($encodedPassword);
         $user->setExpires(false);
         $this->em->persist($user);
         $this->em->flush();
 
         $response = $this->serializer->serialize($user, "json");
-        return new Response($response, Response::HTTP_OK);
+        return new Response($response, Response::HTTP_CREATED);
     }
 
     /**
