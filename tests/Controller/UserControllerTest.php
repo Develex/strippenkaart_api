@@ -48,12 +48,11 @@ class UserControllerTest extends TestCase
 
         $email = 'ObjectOrienter' . rand(0, 999) . '@testmail.nl';
         $data = array(
-            'id' => '1',
             'email' => $email,
             'password' => 'testPassword'
         );
 
-        $response = $client->patch('http://84.81.153.51/user', [
+        $response = $client->patch('http://84.81.153.51/user/11', [
             'body' => json_encode($data)
         ]);
 

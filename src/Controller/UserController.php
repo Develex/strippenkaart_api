@@ -196,7 +196,7 @@ class UserController extends AbstractController
         } else {
             $query = $request->query->all();
             $query['id'] = $id;
-            $users = $this->repository->find($query);
+            $users = $this->repository->findby($query);
         }
         if (!$users) return new Response(null, Response::HTTP_NOT_FOUND);
 
@@ -208,33 +208,39 @@ class UserController extends AbstractController
      * Method for changing a users role.
      * Requires the following parameters in json format.
      * -role: needs one of the following -> An empty string for ROLE_USER, "ROLE_BEHEERDER", "ROLE_PENNINGMEESTER".
-     * -id: integer id of the user.
      *
-     * @Route("/user/roles", name="user_role", methods={"PATCH"})
+     * @Route("/user/roles/{id}", name="user_role", methods={"PATCH"})
      *
      * @param Request $request
+     * @param $id
      * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function changeRole(Request $request)
+    public function changeRole(Request $request, $id)
     {
         $requestData = json_decode($request->getContent());
-        if (!isset($requestData->id) || !isset($requestData->role)) {
+        if (!isset($id) || !isset($requestData->role)) {
             $error = [
                 "error" => "Missing required parameters",
-                "id" => isset($requestData->id),
+                "id" => isset($id),
                 "role" => isset($requestData->role)
             ];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
-        } else if ($requestData->role != "ROLE_PENNINGMEESTER") {
-
         }
-        $user = $this->repository->find($requestData->id);
+        if ($requestData->role != "ROLE_PENNINGMEESTER" && $requestData->role && "ROLE_BEHEERDER" && $requestData->role != "ROLE_USER") {
+            $error = [
+                "error" => "Role parameter must be 'ROLE_PENNINGMEESTER', 'ROLE_BEHEERDER' or 'ROLE_USER'",
+                "id" => isset($id),
+                "role" => isset($requestData->role)
+            ];
+            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+        }
+        $user = $this->repository->find($id);
         if (!$user) {
             $error = [
                 "error" => "No account found with this id",
-                "id" => isset($requestData->id),
+                "id" => isset($id),
                 "role" => isset($requestData->role)
             ];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
@@ -251,28 +257,29 @@ class UserController extends AbstractController
      * Method for deleting a user entity.
      * Requires id in json format.
      *
-     * @Route("/user", name="user_delete", methods={"DELETE"})
+     * @Route("/user/{id}", name="user_delete", methods={"DELETE"})
      *
      * @param Request $request
+     * @param $id
      * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function deleteUser(Request $request)
+    public function deleteUser(Request $request, $id)
     {
         $requestData = json_decode($request->getContent());
-        if (!isset($requestData->id)) {
+        if (!isset($id)) {
             $error = [
                 "error" => "Missing required parameters",
-                "id" => isset($requestData->id)
+                "id" => isset($id)
             ];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
         }
-        $user = $this->repository->find($requestData->id);
+        $user = $this->repository->find($id);
         if (!$user) {
             $error = [
                 "error" => "No account found with this id",
-                "id" => isset($requestData->id)
+                "id" => isset($id)
             ];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
         }
