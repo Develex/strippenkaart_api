@@ -102,31 +102,32 @@ class UserController extends AbstractController
 
     /**
      * Method for updating a user.
-     * Requires id in json format.
+     * Requires id in in url.
      * Optional email, password and phone.
      *
-     * @Route("/user", name="user_update", methods={"PATCH"})
+     * @Route("/user/{id}", name="user_update", methods={"PATCH"})
      *
      * @param Request $request
+     * @param $id
      * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function updateUser(Request $request)
+    public function updateUser(Request $request, $id = 0)
     {
         $requestData = json_decode($request->getContent());
-        if (!isset($requestData->id)) {
+        if (!isset($id)) {
             $error = [
                 "error" => "Missing required parameters",
-                "id" => isset($requestData->id)];
+                "id" => isset($id)];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
         }
         /** @var User $user */
-        $user = $this->repository->find($requestData->id);
+        $user = $this->repository->find($id);
         if (!$user) {
             $error = [
                 "error" => "No account found with this id",
-                "id" => isset($requestData->id)];
+                "id" => isset($id)];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
         }
 
@@ -141,30 +142,31 @@ class UserController extends AbstractController
 
     /**
      * Method for disabling or enabling a user.
-     * Requires id in json format.
+     * Requires id in url.
      *
-     * @Route("/user/active", name="user_active", methods={"PATCH"})
+     * @Route("/user/active/{id}", name="user_active", methods={"PATCH"})
      *
      * @param Request $request
+     * @param $id
      * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function toggleActive(Request $request)
+    public function toggleActive(Request $request, $id = 0)
     {
         $requestData = json_decode($request->getContent());
-        if (!isset($requestData->id)) {
+        if ($id == 0) {
             $error = [
                 "error" => "Missing required parameters",
-                "id" => isset($requestData->id)
+                "id" => $id
             ];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
         }
-        $user = $this->repository->find($requestData->id);
+        $user = $this->repository->find($id);
         if (!$user) {
             $error = [
                 "error" => "No account found with this id",
-                "id" => isset($requestData->id)
+                "id" => $id
             ];
             return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
         }
@@ -181,14 +183,21 @@ class UserController extends AbstractController
      * Optional parameters as filter.
      * When no parameters are given all users wil ben retrieved from the database.
      *
-     * @Route("/user", name="user_get", methods={"GET"})
+     * @Route("/user/{id}", name="user_get", methods={"GET","HEAD"})
      *
      * @param Request $request
+     * @param $id
      * @return Response
      */
-    public function getUsers(Request $request)
+    public function getUsers(Request $request, $id = 0)
     {
-        $users = $this->repository->findBy($request->query->all());
+        if ($id == 0) {
+            $users = $this->repository->findBy($request->query->all());
+        } else {
+            $query = $request->query->all();
+            $query['id'] = $id;
+            $users = $this->repository->find($query);
+        }
         if (!$users) return new Response(null, Response::HTTP_NOT_FOUND);
 
         $response = $this->serializer->serialize($users, 'json');
@@ -201,7 +210,7 @@ class UserController extends AbstractController
      * -role: needs one of the following -> An empty string for ROLE_USER, "ROLE_BEHEERDER", "ROLE_PENNINGMEESTER".
      * -id: integer id of the user.
      *
-     * @Route("/user/roles", name="user_get", methods={"PATCH"})
+     * @Route("/user/roles", name="user_role", methods={"PATCH"})
      *
      * @param Request $request
      * @return Response
