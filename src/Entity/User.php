@@ -57,7 +57,7 @@ class User implements UserInterface
 
     /**
      * @var integer
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      */
     private $token;
 
