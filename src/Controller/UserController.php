@@ -1,6 +1,8 @@
 <?php
 /**
  * The controller for all Crud functions of the User entity.
+ *
+ *
  */
 
 namespace App\Controller;
@@ -19,8 +21,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class UserController
+ * Class UserController.
+ * This is the controller that handles all Crud routes of the User Entity.
+ *
  * @package App\Controller
+ * @author Collin Franckena <collin.franckena001@fclive.nl> <collinfranckena77@gmail.com>, Crebo: 15187 , Friesland College Heereveen, Student number:227398.
+ * @version 1.0
  */
 class UserController extends AbstractController
 {
@@ -61,11 +67,10 @@ class UserController extends AbstractController
 
     /**
      * Method for creating a new user.
-     * Requires mail and password in json format.
      *
      * @Route("/user", name="user_create", methods={"POST"})
      *
-     * @param Request $request
+     * @param Request $request email & password in the body.
      * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
@@ -107,8 +112,8 @@ class UserController extends AbstractController
      *
      * @Route("/user/{id}", name="user_update", methods={"PATCH"})
      *
-     * @param Request $request
-     * @param $id
+     * @param Request $request email, username, phone in body of request.
+     * @param integer $id id of the User entity that with be updated.
      * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
