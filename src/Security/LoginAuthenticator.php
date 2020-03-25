@@ -132,7 +132,6 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
             "access_token" => $accessToken
         ];
         return new Response(json_encode($msg), Response::HTTP_CREATED);
-//        return null;
     }
 
     /**

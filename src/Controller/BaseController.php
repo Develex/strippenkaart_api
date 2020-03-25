@@ -6,13 +6,12 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-/*
+/**
  * Class BaseController
  * @package App\Controller
  * @author Collin Franckena <collin.franckena001@fclive.nl> <collinfranckena77@gmail.com>, Crebo: 15187 , Friesland College Heereveen, Student number:227398.
  * @version 1.0
  */
-
 class BaseController extends AbstractController
 {
     /**

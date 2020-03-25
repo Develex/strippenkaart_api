@@ -41,12 +41,6 @@ class User implements UserInterface, JsonSerializableAlias
     private $password;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
-    private $phone;
-
-    /**
      * @var boolean
      * @ORM\Column(type="boolean")
      */
@@ -175,25 +169,6 @@ class User implements UserInterface, JsonSerializableAlias
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param string|null $phone
-     * @return $this
-     */
-    public function setPhone(?string $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
     }
 
     /**

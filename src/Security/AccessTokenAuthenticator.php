@@ -113,7 +113,6 @@ class AccessTokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        // mogelijke locatie voor accesstoken renewal
         return null;
     }
 
