@@ -21,11 +21,17 @@ class BaseController extends AbstractController
      */
     public function sendResponse($code, $data): Response
     {
+        if ($this->getUser() == null) {
+            $accessToken = null;
+        } else {
+            $accessToken = $this->getUser()->getAccessToken();
+        }
+
         $msg = [
             "status" => "action was successful",
             "code" => $code,
             "data" => $data,
-            "access_token" => $this->getUser()->getAccessToken()
+            "access_token" => $accessToken
         ];
 
         return new Response(json_encode($msg), $code);
@@ -39,11 +45,17 @@ class BaseController extends AbstractController
      */
     public function sendError($code, $data): Response
     {
+        if ($this->getUser() == null) {
+            $accessToken = null;
+        } else {
+            $accessToken = $this->getUser()->getAccessToken();
+        }
+
         $msg = [
             "status" => "action has failed",
             "code" => $code,
             "message" => $data,
-            "access_token" => $this->getUser()->getAccessToken()
+            "access_token" => $accessToken
         ];
 
         return new Response(json_encode($msg), $code);

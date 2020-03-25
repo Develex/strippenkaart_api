@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -68,6 +69,7 @@ class UserController extends BaseController
      * Method for creating a new user.
      *
      * @Route("/user", name="user_create", methods={"POST"})
+     * @IsGranted("ROLE_PENNINGMEESTER")
      *
      * @param Request $request email & password in the body.
      * @return Response
@@ -102,6 +104,7 @@ class UserController extends BaseController
      * Optional email, password and phone.
      *
      * @Route("/user/{id}", name="user_update", methods={"PATCH"})
+     * @IsGranted("ROLE_USER")
      *
      * @param Request $request email, username, phone in body of request.
      * @param integer $id id of the User entity that with be updated.
@@ -109,7 +112,7 @@ class UserController extends BaseController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function updateUser(Request $request, $id = 0)
+    public function updateUser(Request $request, $id)
     {
         $requestData = json_decode($request->getContent());
         if (!isset($id)) {
@@ -133,6 +136,7 @@ class UserController extends BaseController
      * Requires id in url.
      *
      * @Route("/user/active/{id}", name="user_active", methods={"PATCH"})
+     * @IsGranted("ROLE_PENNINGMEESTER")
      *
      * @param Request $request
      * @param $id
@@ -163,6 +167,7 @@ class UserController extends BaseController
      * When no parameters are given all users wil ben retrieved from the database.
      *
      * @Route("/user/{id}", name="user_get", methods={"GET","HEAD"})
+     * @IsGranted("ROLE_USER")
      *
      * @param Request $request
      * @param $id
@@ -178,7 +183,7 @@ class UserController extends BaseController
             $users = $this->repository->findby($query);
         }
         if (!$users) return $this->sendError(204, "No User(s) found");
-        
+
         return $this->sendResponse(200, $users);
     }
 
@@ -199,36 +204,21 @@ class UserController extends BaseController
     {
         $requestData = json_decode($request->getContent());
         if (!isset($id) || !isset($requestData->role)) {
-            $error = [
-                "error" => "Missing required parameters",
-                "id" => isset($id),
-                "role" => isset($requestData->role)
-            ];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(400, "Missing required parameters");
         }
         if ($requestData->role != "ROLE_PENNINGMEESTER" && $requestData->role && "ROLE_BEHEERDER" && $requestData->role != "ROLE_USER") {
-            $error = [
-                "error" => "Role parameter must be 'ROLE_PENNINGMEESTER', 'ROLE_BEHEERDER' or 'ROLE_USER'",
-                "id" => isset($id),
-                "role" => isset($requestData->role)
-            ];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(400, "Role parameter must be 'ROLE_PENNINGMEESTER', 'ROLE_BEHEERDER' or 'ROLE_USER'");
         }
         $user = $this->repository->find($id);
         if (!$user) {
-            $error = [
-                "error" => "No account found with this id",
-                "id" => isset($id),
-                "role" => isset($requestData->role)
-            ];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(400, "No account found with this id");
         }
 
         $user->setRoles(["$requestData->role"]);
         $this->em->flush();
 
-        $response = $this->serializer->serialize($user, 'json');
-        return new Response($response, Response::HTTP_OK);
+//        $response = $this->serializer->serialize($user, 'json');
+        return $this->sendResponse(200, $user);
     }
 
     /**
@@ -236,6 +226,7 @@ class UserController extends BaseController
      * Requires id in json format.
      *
      * @Route("/user/{id}", name="user_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_PENNINGMEESTER")
      *
      * @param Request $request
      * @param $id
