@@ -238,25 +238,16 @@ class UserController extends BaseController
     {
         $requestData = json_decode($request->getContent());
         if (!isset($id)) {
-            $error = [
-                "error" => "Missing required parameters",
-                "id" => isset($id)
-            ];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(400, "Missing required parameters");
         }
         $user = $this->repository->find($id);
         if (!$user) {
-            $error = [
-                "error" => "No account found with this id",
-                "id" => isset($id)
-            ];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(400, "No account found with this id");
         }
 
         $this->em->remove($user);
         $this->em->flush();
 
-        $response = $this->serializer->serialize($user, 'json');
-        return new Response($response, Response::HTTP_OK);
+        return $this->sendResponse(200, "User Deleted");
     }
 }
