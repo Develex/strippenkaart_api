@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable as JsonSerializableAlias;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @author Collin Franckena <collin.franckena001@fclive.nl> <collinfranckena77@gmail.com>, Crebo: 15187 , Friesland College Heereveen, Student number:227398.
  * @version 1.0
  */
-class User implements UserInterface
+class User implements UserInterface, JsonSerializableAlias
 {
     /**
      * @var integer
@@ -58,7 +59,7 @@ class User implements UserInterface
     private $expiresAt;
 
     /**
-     * @var integer
+     * @var string
      * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      */
     private $accessToken;
@@ -203,6 +204,11 @@ class User implements UserInterface
         return $this->expires;
     }
 
+    public function isExpired(): ?bool
+    {
+        return $this->getExpiresAt() <= new DateTime('now');
+    }
+
     /**
      * @param bool $expires
      * @return $this
@@ -269,5 +275,18 @@ class User implements UserInterface
         $this->active = $active;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "email" => $this->email,
+            "roles" => $this->getRoles(),
+            "active" => $this->active
+        ];
     }
 }

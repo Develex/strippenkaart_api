@@ -6,43 +6,48 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-/**\
+/*
  * Class BaseController
  * @package App\Controller
  * @author Collin Franckena <collin.franckena001@fclive.nl> <collinfranckena77@gmail.com>, Crebo: 15187 , Friesland College Heereveen, Student number:227398.
  * @version 1.0
  */
+
 class BaseController extends AbstractController
 {
     /**
-     * @param $data
-     * @param $message
+     * @param integer $code
+     * @param array|string|null $data
      * @return Response
      */
-    public function sendResponse($data, $message): Response
+    public function sendResponse($code, $data): Response
     {
         $msg = [
             "status" => "action was successful",
+            "code" => $code,
             "data" => $data,
-            "message" => $message
+            "access_token" => $this->getUser()->getAccessToken()
         ];
 
-        return new Response(json_encode($msg), Response::HTTP_OK);
+        return new Response(json_encode($msg), $code);
     }
 
+
     /**
-     * @param $data
-     * @param $message
+     * @param integer $code
+     * @param array|string|null $data
      * @return Response
      */
-    public function sendError($data, $message): Response
+    public function sendError($code, $data): Response
     {
         $msg = [
             "status" => "action has failed",
-            "data" => $data,
-            "message" => $message
+            "code" => $code,
+            "message" => $data,
+            "access_token" => $this->getUser()->getAccessToken()
         ];
 
-        return new Response(json_encode($msg), Response::HTTP_BAD_REQUEST);
+        return new Response(json_encode($msg), $code);
+
     }
 }
