@@ -3,7 +3,9 @@
 namespace App\Security;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -72,10 +74,20 @@ class AccessTokenAuthenticator extends AbstractGuardAuthenticator
      * @param mixed $credentials
      * @param UserInterface $user
      * @return bool|null
+     * @throws Exception
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        // kan mogelijk hier checken als de token nog valide is.
+        $tokenGenerator = new TokenGenerator();
+        if ($user->getExpires() == false) {
+            if ($user->isExpired()) {
+                return false;
+            } else {
+                $user->setAccessToken($tokenGenerator->generate(20));
+                $user->setExpiresAt(new DateTime('+5min'));
+                $this->em->flush();
+            }
+        }
         return true;
     }
 
