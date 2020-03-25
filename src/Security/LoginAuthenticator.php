@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+
 
 /**
  * Class LoginAuthenticator
@@ -112,14 +114,18 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
      * @param TokenInterface $token
      * @param string $providerKey
      * @return Response|null
+     * @throws \Exception
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        /** @var string $accessToken */
-        $accessToken = null;
-//
-//        $user = $token->getUser();
-//
+        $tokenGenerator = new TokenGenerator();
+        $accessToken = $tokenGenerator->generate(20);
+
+        $user = $token->getUser();
+        $user->setAccessToken($accessToken);
+        $user->setExpiresAt(new DateTime('+5min'));
+        $user->setExpires(true);
+        $this->em->flush();
 
         $msg = [
             "message" => "Login Successful",
