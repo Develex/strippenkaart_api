@@ -22,3 +22,7 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> phpdoc ###
+/docs
+###< phpdoc ###
