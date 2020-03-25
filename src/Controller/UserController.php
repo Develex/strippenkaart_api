@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +27,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @author Collin Franckena <collin.franckena001@fclive.nl> <collinfranckena77@gmail.com>, Crebo: 15187 , Friesland College Heereveen, Student number:227398.
  * @version 1.0
  */
-class UserController extends AbstractController
+class UserController extends BaseController
 {
     /**
      * @var EntityManager
@@ -79,18 +78,10 @@ class UserController extends AbstractController
     {
         $data = json_decode($request->getContent());
         if (!isset($data->email) || !isset($data->password)) {
-            $error = [
-                "error" => "Missing required parameters",
-                "email" => isset($data->email),
-                "password" => isset($data->password)];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(400, "Missing required parameters");
         }
         if ($this->repository->findBy(['email' => $data->email])) {
-            $error = [
-                "error" => "An account already exists with this email address",
-                "email" => isset($data->email),
-                "password" => isset($data->password)];
-            return new Response(json_encode($error), Response::HTTP_CONFLICT);
+            return $this->sendError(409, "An Account already exist with this email address");
         }
 
         $user = new User();
@@ -102,7 +93,7 @@ class UserController extends AbstractController
         $this->em->flush();
 
         $response = $this->serializer->serialize($user, "json");
-        return new Response($response, Response::HTTP_CREATED);
+        return $this->sendResponse(201, $response);
     }
 
     /**
@@ -122,18 +113,11 @@ class UserController extends AbstractController
     {
         $requestData = json_decode($request->getContent());
         if (!isset($id)) {
-            $error = [
-                "error" => "Missing required parameters",
-                "id" => isset($id)];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(400, "Missing required parameters");
         }
-        /** @var User $user */
         $user = $this->repository->find($id);
         if (!$user) {
-            $error = [
-                "error" => "No account found with this id",
-                "id" => isset($id)];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(204, "No user found with this id");
         }
 
         if (isset($requestData->email)) $user->setEmail($requestData->email);
@@ -141,8 +125,7 @@ class UserController extends AbstractController
         if (isset($requestData->phone)) $user->setPhone($requestData->phone);
         $this->em->flush();
 
-        $response = $this->serializer->serialize($user, "json");
-        return new Response($response, Response::HTTP_OK);
+        return $this->sendResponse(200, "User successfully updated");
     }
 
     /**
@@ -161,26 +144,17 @@ class UserController extends AbstractController
     {
         $requestData = json_decode($request->getContent());
         if ($id == 0) {
-            $error = [
-                "error" => "Missing required parameters",
-                "id" => $id
-            ];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(400, "Missing required parameters");
         }
         $user = $this->repository->find($id);
         if (!$user) {
-            $error = [
-                "error" => "No account found with this id",
-                "id" => $id
-            ];
-            return new Response(json_encode($error), Response::HTTP_BAD_REQUEST);
+            return $this->sendError(204, "No user found with this id");
         }
 
         $user->setActive(!$user->getActive());
         $this->em->flush();
 
-        $response = $this->serializer->serialize($user, "json");
-        return new Response($response, Response::HTTP_OK);
+        return $this->sendResponse(200, "Successfully toggled user activation");
     }
 
     /**
@@ -203,10 +177,9 @@ class UserController extends AbstractController
             $query['id'] = $id;
             $users = $this->repository->findby($query);
         }
-        if (!$users) return new Response(null, Response::HTTP_NOT_FOUND);
-
-        $response = $this->serializer->serialize($users, 'json');
-        return new Response($response, Response::HTTP_OK);
+        if (!$users) return $this->sendError(204, "No User(s) found");
+        
+        return $this->sendResponse(200, $users);
     }
 
     /**
