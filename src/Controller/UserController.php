@@ -207,7 +207,7 @@ class UserController extends BaseController
         if (!isset($id) || !isset($requestData->role)) {
             return $this->sendError(400, "Missing required parameters");
         }
-        if ($requestData->role != "ROLE_PENNINGMEESTER" && $requestData->role == "ROLE_BEHEERDER" && $requestData->role != "ROLE_USER") {
+        if ($requestData->role != "ROLE_PENNINGMEESTER" && $requestData->role != "ROLE_BEHEERDER" && $requestData->role != "ROLE_USER") {
             return $this->sendError(400, "Role parameter must be 'ROLE_PENNINGMEESTER', 'ROLE_BEHEERDER' or 'ROLE_USER'");
         }
         $user = $this->repository->find($id);
