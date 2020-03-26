@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.idea
 /.env
@@ -23,3 +22,7 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> phpdoc ###
+/docs
+###< phpdoc ###

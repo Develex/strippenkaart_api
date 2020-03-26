@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable as JsonSerializableAlias;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @author Collin Franckena <collin.franckena001@fclive.nl> <collinfranckena77@gmail.com>, Crebo: 15187 , Friesland College Heereveen, Student number:227398.
+ * @version 1.0
  */
-class User implements UserInterface
+class User implements UserInterface, JsonSerializableAlias
 {
     /**
      * @var integer
@@ -38,12 +41,6 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
-    private $phone;
-
-    /**
      * @var boolean
      * @ORM\Column(type="boolean")
      */
@@ -56,10 +53,10 @@ class User implements UserInterface
     private $expiresAt;
 
     /**
-     * @var integer
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      */
-    private $token;
+    private $accessToken;
 
     /**
      * @ORM\Column(type="boolean")
@@ -175,30 +172,16 @@ class User implements UserInterface
     }
 
     /**
-     * @return string|null
-     */
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param string|null $phone
-     * @return $this
-     */
-    public function setPhone(?string $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
      * @return bool|null
      */
     public function getExpires(): ?bool
     {
         return $this->expires;
+    }
+
+    public function isExpired(): ?bool
+    {
+        return $this->getExpiresAt() <= new DateTime('now');
     }
 
     /**
@@ -234,18 +217,18 @@ class User implements UserInterface
     /**
      * @return string|null
      */
-    public function getToken(): ?string
+    public function getAccessToken(): ?string
     {
-        return $this->token;
+        return $this->accessToken;
     }
 
     /**
-     * @param string|null $token
+     * @param string|null $accessToken
      * @return $this
      */
-    public function setToken(?string $token): self
+    public function setAccessToken(?string $accessToken): self
     {
-        $this->token = $token;
+        $this->accessToken = $accessToken;
 
         return $this;
     }
@@ -267,5 +250,18 @@ class User implements UserInterface
         $this->active = $active;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "email" => $this->email,
+            "roles" => $this->getRoles(),
+            "active" => $this->active
+        ];
     }
 }

@@ -8,20 +8,33 @@ security:
       security: false
     main:
       anonymous: lazy
+      pattern: ^/api/v1/
       provider: users_in_memory
+      guard:
+        authenticators:
+          - App\Security\LoginAuthenticator
+          - App\Security\AccessTokenAuthenticator
+        entry_point: App\Security\LoginAuthenticator
+      stateless: true
   encoders:
     App\Entity\User:
       algorithm: auto
       cost: 15
+  role_hierarchy:
+    ROLE_BEHEERDER: []
+    ROLE_PENNINGMEESTER: [ROLE_BEHEERDER]
+    ROLE_SUPER_ADMIN: [ROLE_BEHEERDER, ROLE_PENNINGMEESTER]
 
-      # activate different ways to authenticate
-      # https://symfony.com/doc/current/security.html#firewalls-authentication
 
-      # https://symfony.com/doc/current/security/impersonating_user.html
-      # switch_user: true
+    # activate different ways to authenticate
+    # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+    # https://symfony.com/doc/current/security/impersonating_user.html
+  # switch_user: true
 
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-  # - { path: ^/admin, roles: ROLE_ADMIN }
-  # - { path: ^/profile, roles: ROLE_USER }
+    - { path: ^/api/v1/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/v1/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/, roles: ROLE_USER }
