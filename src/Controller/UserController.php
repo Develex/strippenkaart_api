@@ -193,6 +193,7 @@ class UserController extends BaseController
      * -role: needs one of the following -> An empty string for ROLE_USER, "ROLE_BEHEERDER", "ROLE_PENNINGMEESTER".
      *
      * @Route("/user/roles/{id}", name="user_role", methods={"PATCH"})
+     * @IsGranted("ROLE_PENNINGMEESTER")
      *
      * @param Request $request
      * @param $id
