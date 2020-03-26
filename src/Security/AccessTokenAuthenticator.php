@@ -79,7 +79,7 @@ class AccessTokenAuthenticator extends AbstractGuardAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         $tokenGenerator = new TokenGenerator();
-        if ($user->getExpires() == false) {
+        if ($user->getExpires() != false) {
             if ($user->isExpired()) {
                 return false;
             } else {
