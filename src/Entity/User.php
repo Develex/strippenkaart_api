@@ -64,11 +64,17 @@ class User implements UserInterface, JsonSerializableAlias
     private $active;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $verified;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->active = true;
+        $this->verified = false;
     }
 
     /**
@@ -252,6 +258,7 @@ class User implements UserInterface, JsonSerializableAlias
         return $this;
     }
 
+
     /**
      * @inheritDoc
      */
@@ -263,5 +270,17 @@ class User implements UserInterface, JsonSerializableAlias
             "roles" => $this->getRoles(),
             "active" => $this->active
         ];
+    }
+
+    public function getVerified(): ?bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(bool $verified): self
+    {
+        $this->verified = $verified;
+
+        return $this;
     }
 }

@@ -75,7 +75,7 @@ class SecurityController extends BaseController
         $user->setEmail($data->email);
         $encodedPassword = $this->encoder->encodePassword($user, $data->password);
         $user->setPassword($encodedPassword);
-        $user->setExpires(false);
+        $user->setExpires(true);
         $this->em->persist($user);
         $this->em->flush();
 
