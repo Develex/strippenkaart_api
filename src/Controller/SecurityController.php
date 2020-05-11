@@ -81,4 +81,21 @@ class SecurityController extends BaseController
 
         return $this->sendResponse(200, "Account created.");
     }
+
+    /**
+     * Method for confirming a email of a account
+     *
+     * requires reference of account in body of the request.
+     *
+     * @Route("/confirm", name="confirm", methods={"POST"})
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function confirm(Request $request): Response
+    {
+        $token = null;
+        
+
+    }
 }

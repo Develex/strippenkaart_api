@@ -9,6 +9,7 @@ security:
     main:
       anonymous: lazy
       pattern: ^/api/v1/
+      user_checker: App\Security\UserChecker
       provider: users_in_memory
       guard:
         authenticators:

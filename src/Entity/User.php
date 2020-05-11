@@ -73,7 +73,7 @@ class User implements UserInterface, JsonSerializableAlias
      */
     public function __construct()
     {
-        $this->active = true;
+        $this->active = false;
         $this->verified = false;
     }
 
@@ -258,6 +258,23 @@ class User implements UserInterface, JsonSerializableAlias
         return $this;
     }
 
+    public function getVerified(): ?bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(bool $verified): self
+    {
+        $this->verified = $verified;
+
+        return $this;
+    }
+
+    public function isInactive(): bool
+    {
+        return !$this->active;
+    }
+
 
     /**
      * @inheritDoc
@@ -272,15 +289,5 @@ class User implements UserInterface, JsonSerializableAlias
         ];
     }
 
-    public function getVerified(): ?bool
-    {
-        return $this->verified;
-    }
 
-    public function setVerified(bool $verified): self
-    {
-        $this->verified = $verified;
-
-        return $this;
-    }
 }

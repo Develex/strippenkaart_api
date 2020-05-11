@@ -103,7 +103,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $msg = [
-            "message" => "Wrong Credentials"
+            "message" => $exception->getMessage()
         ];
 
         return new Response(json_encode($msg), Response::HTTP_UNAUTHORIZED);
