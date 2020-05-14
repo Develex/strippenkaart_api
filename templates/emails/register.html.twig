@@ -1,0 +1,14 @@
+<h1>Bedankt voor het registreren</h1>
+
+Hallo {{ email }}! <br><br>
+U bent bijna klaar met registreren. <br>
+U hoeft alleen nog maar uw email te verifieren door <a href="{{ absolute_url( url('confirm', {'c': data.code }) ) }}">hier</a> te klikken.
+<br>
+Werkt de link niet dan kunt u de link kopiëren en plakken in u browser. <br>
+{{ absolute_url( url('confirm', {'c': data.code }) ) }}
+<br>
+Hierna kunt inloggen op de website of app. <br>
+<br>
+Wij wensen u een fijne tijd toe met de app of website, <br>
+<br>
+<b>Sportclub Delta Impuls</b>

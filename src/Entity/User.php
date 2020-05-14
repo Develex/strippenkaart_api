@@ -69,6 +69,11 @@ class User implements UserInterface, JsonSerializableAlias
     private $verified;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $verificationCode;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -287,6 +292,18 @@ class User implements UserInterface, JsonSerializableAlias
             "roles" => $this->getRoles(),
             "active" => $this->active
         ];
+    }
+
+    public function getVerificationCode(): ?string
+    {
+        return $this->verificationCode;
+    }
+
+    public function setVerificationCode(?string $verificationCode): self
+    {
+        $this->verificationCode = $verificationCode;
+
+        return $this;
     }
 
 
