@@ -190,7 +190,7 @@ class UserController extends BaseController
     /**
      * Method for changing a users role.
      * Requires the following parameters in json format.
-     * -role: needs one of the following -> An empty string for ROLE_USER, "ROLE_BEHEERDER", "ROLE_PENNINGMEESTER".
+     * -role: needs one of the following -> An empty string for ROLE_USER, "ROLE_BEHEERDER", "".
      *
      * @Route("/user/roles/{id}", name="user_role", methods={"PATCH"})
      * @IsGranted("ROLE_PENNINGMEESTER")
