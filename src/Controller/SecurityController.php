@@ -84,7 +84,7 @@ class SecurityController extends BaseController
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->sendMail($data->email, ['code' => $code], $swiftMailer);
+//        $this->sendMail($data->email, ['code' => $code], $swiftMailer);
 
         return $this->sendResponse(200, "Account created.");
     }
