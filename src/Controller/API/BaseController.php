@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\API;
 
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

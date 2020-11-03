@@ -5,7 +5,7 @@
  *
  */
 
-namespace App\Controller;
+namespace App\Controller\API;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
