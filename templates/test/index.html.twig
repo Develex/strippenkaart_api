@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TestController!{% endblock %}
+
+{% block body %}
+
+    <div class="modal" tabindex="-1" role="dialog" id="loginModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" target="_self" action="https://strippenkaart-api.dev-collin.nl/api/v1/login"
+                      id="loginForm">
+                    <div class="modal-body">
+                        <p>Voer hier uw inlog gegevens in.</p>
+                        <div class="form-group">
+                            <label for="loginEmail">Email:</label>
+                            <input class="form-control" type="email" name="email" id="loginEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Wachtwoord:</label>
+                            <input class="form-control" type="password" name="password" id="loginPassword">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Log in</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Strippenkaart API Tester</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Transactions</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Entities
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#users">Users</a>
+                        <a class="dropdown-item" href="#strips">Strippenkaarten</a>
+                        <a class="dropdown-item" href="#requests">Betaal Verzoeken</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <button type="button" class="nav-link" data-toggle="modal" data-target="#loginModal">Login</button>
+                </li>
+                <li class="nav-item navbar-brand d-none" id="userEmail">
+                    Placeholder
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="users" class="card w-100 mt-5">
+            <div class="card-header">Gebruikers</div>
+            <div class="card-body">
+                <button type="button" id="userRefresh">Refresh</button>
+                <table id="userTable">
+                </table>
+            </div>
+            <div class="card-header">Registration</div>
+            <div class="card-body">
+                <form method="POST" id="registrationForm">
+                    <label for="registrationEmail">Email:</label>
+                    <input class="form-control" type="text" id="registrationEmail"/>
+                    <label for="registrationPassword1">Password:</label>
+                    <input class="form-control" type="password" id="registrationPassword1"/>
+                    <label for="registrationPassword2">Retype Password:</label>
+                    <input class="form-control" type="password" id="registrationPassword2"/>
+                    <input class="btn btn-success" type="submit" id="registrationSubmit">
+                </form>
+            </div>
+        </div>
+        <div id="strips" class="card w-100 mt-5">
+            <div class="card-header">Strippenkaarten</div>
+
+        </div>
+        <div id="requests" class="card w-100 mt-5">
+            <div class="card-header">Betaal verzoeken</div>
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
