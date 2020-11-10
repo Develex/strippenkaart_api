@@ -97,6 +97,24 @@
                     <input class="btn btn-success" type="submit" id="registrationSubmit">
                 </form>
             </div>
+            <div class="card-header">Activate</div>
+            <div class="card-body">
+                <form method="post" id="activateForm">
+                    <label for="activateUser">User:</label>
+                    <select id="activateUser" name="activateUser" class="form-control">
+
+                    </select>
+{#                    <div class="form-check">#}
+{#                        <input type="checkbox" id="activateActive" class="form-check-input">#}
+{#                        <label for="activateActive" class="form-check-label" >Active</label>#}
+{#                    </div>#}
+{#                    <div class="form-check">#}
+{#                        <input type="checkbox" id="activateVerified" class="form-check-input">#}
+{#                        <label for="activateVerified" class="form-check-label" >Verified</label>#}
+{#                    </div>#}
+                    <input class="btn btn-success" type="submit" id="activateSubmit">
+                </form>
+            </div>
         </div>
         <div id="strips" class="card w-100 mt-5">
             <div class="card-header">Strippenkaarten</div>
@@ -141,6 +159,11 @@
             }
         })
 
+        $("#activateForm").submit(function (e) {
+            e.preventDefault();
+            activate();
+        })
+
         const userTable = $("#userTable").DataTable({
             columns: [
                 {title: "ID", data: "id"},
@@ -150,7 +173,7 @@
             ]
         });
 
-let getUserData = function () {
+        let getUserData = function () {
     let url = baseUrl + "user";
     let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
 
@@ -167,11 +190,21 @@ let getUserData = function () {
 
             const responseData = Array.from(data.data);
             console.log(responseData);
+            //add data to UserTable
             userTable.rows.add(responseData);
             userTable.draw();
+
+            //add data to userDropdown
+            const userDropdown = $('#activateUser');
+            $.each(responseData, function(key, value) {
+                userDropdown
+                    .append($("<option></option>")
+                        .attr("value", value.id)
+                        .text(value.email));
+            });
+
         });
 }
-
 
         let login = function (email, password) {
             let url = baseUrl + "login";
@@ -216,6 +249,21 @@ let getUserData = function () {
                     console.log(error);
                 });
         }
+
+        let activate = function () {
+            const url = baseUrl + $('#activateUser').val() + "/activate";
+            let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    'Authorization': auth
+                },
+            })
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+        }
+
     });
     </script>
 {% endblock %}

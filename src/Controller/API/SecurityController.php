@@ -115,6 +115,24 @@ class SecurityController extends BaseController
     }
 
     /**
+     * Method voor het activeren van een account.
+     * @Route("/{id}/activate", name="activate", methods={"POST"})
+     *
+     * @param Request $request
+     * @param $id
+     */
+    public function activate(Request $request, $id) {
+        $user = $this->em->getRepository(User::class) ->find($id);
+        if (!$user)
+            $this->sendError(400, "User not found");
+        else {
+            $user->setActive(true);
+            $this->em->flush();
+        }
+        $this->sendResponse(200, "Account updated");
+    }
+
+    /**
      * Generate a random string, using a cryptographically secure
      * pseudorandom number generator (random_int)
      *
