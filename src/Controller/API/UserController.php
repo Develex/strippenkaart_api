@@ -192,7 +192,7 @@ class UserController extends BaseController
      * Requires the following parameters in json format.
      * -role: needs one of the following -> An empty string for ROLE_USER, "ROLE_BEHEERDER", "".
      *
-     * @Route("/user/roles/{id}", name="user_role", methods={"PATCH"})
+     * @Route("/user/{id}/roles", name="user_role", methods={"PATCH"})
      * @IsGranted("ROLE_PENNINGMEESTER")
      *
      * @param Request $request
@@ -204,6 +204,7 @@ class UserController extends BaseController
     public function changeRole(Request $request, $id)
     {
         $requestData = json_decode($request->getContent());
+        dump($requestData);
         if (!isset($id) || !isset($requestData->role)) {
             return $this->sendError(400, "Missing required parameters");
         }
