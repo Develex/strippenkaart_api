@@ -121,6 +121,20 @@
                     </select>
                     <input class="btn btn-success" type="submit" id="roleSubmit">
                 </form>
+            </div><div class="card-header">Roles</div>
+            <div class="card-body">
+                <form method="post" id="changeRole">
+                    <label for="roleUser">User:</label>
+                    <select id="roleUser" name="roleUser" class="form-control">
+                    </select>
+                    <label for="roleRole">Role:</label>
+                    <select id="roleRole" name="roleRole" class="form-control">
+                        <option value="ROLE_USER">User</option>
+                        <option value="ROLE_BEHEERDER">Beheerder</option>
+                        <option value="ROLE_PENNINGMEESTER">Penningmeester</option>
+                    </select>
+                    <input class="btn btn-success" type="submit" id="roleSubmit">
+                </form>
             </div>
         </div>
         <div id="strips" class="card w-100 mt-5">
