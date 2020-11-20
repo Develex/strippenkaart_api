@@ -10,6 +10,20 @@ class UserControllerTest extends TestCase
     /**
      * @test
      */
+    public function loginAction(){
+        $client = new Client([
+            'base_url' => 'http://localhost:8000',
+            'defaults' => [
+                'exceptions' => false
+            ]
+        ]);
+
+        $auth = "Basic " . base64_encode("");
+    }
+
+    /**
+     * @test
+     */
     public function postNewAction()
     {
         $client = new Client([
@@ -29,7 +43,7 @@ class UserControllerTest extends TestCase
             'Authorization' => 'Bearer vqrNfdY_aCu5ext0lYCtjxe0g4s=',
         ];
 
-        $response = $client->post('http://84.81.153.51/api/v1/user', [
+        $response = $client->post('https://strippenkaart.collinfranckena.com/api/v1/user', [
             'body' => json_encode($data),
             'headers' => $headers,
             'http_errors' => false
@@ -71,7 +85,7 @@ class UserControllerTest extends TestCase
             'Authorization' => 'Bearer vqrNfdY_aCu5ext0lYCtjxe0g4s=',
         ];
 
-        $response = $client->patch('http://84.81.153.51/api/v1/user/' . $id, [
+        $response = $client->patch('https://strippenkaart.collinfranckena.com/api/v1/user/' . $id, [
             'body' => json_encode($data),
             'headers' => $headers,
             'http_errors' => false
@@ -107,7 +121,7 @@ class UserControllerTest extends TestCase
             'Authorization' => 'Bearer vqrNfdY_aCu5ext0lYCtjxe0g4s=',
         ];
 
-        $response = $client->get('http://84.81.153.51/api/v1/user/' . $id, [
+        $response = $client->get('https://strippenkaart.collinfranckena.com/api/v1/user/' . $id, [
             'body' => json_encode($data),
             'headers' => $headers,
             'http_errors' => false
@@ -145,7 +159,7 @@ class UserControllerTest extends TestCase
             'Authorization' => 'Bearer vqrNfdY_aCu5ext0lYCtjxe0g4s=',
         ];
 
-        $response = $client->patch('http://84.81.153.51/api/v1/user/roles/' . $id, [
+        $response = $client->patch('https://strippenkaart.collinfranckena.com/api/v1/user/roles/' . $id, [
             'body' => json_encode($data),
             'headers' => $headers,
             'http_errors' => false
@@ -181,7 +195,7 @@ class UserControllerTest extends TestCase
             'Authorization' => 'Bearer vqrNfdY_aCu5ext0lYCtjxe0g4s=',
         ];
 
-        $response = $client->delete('http://84.81.153.51/api/v1/user/' . $id, [
+        $response = $client->delete('https://strippenkaart.collinfranckena.com/api/v1/user/' . $id, [
             'body' => json_encode($data),
             'headers' => $headers,
             'http_errors' => false

@@ -6,6 +6,10 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
+    register:
+      anonymous: lazy
+      pattern: ^/api/v1/register
+      stateless: true
     main:
       anonymous: lazy
       pattern: ^/api/v1/
