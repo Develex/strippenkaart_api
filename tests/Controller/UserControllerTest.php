@@ -18,7 +18,14 @@ class UserControllerTest extends TestCase
             ]
         ]);
 
-        $auth = "Basic " . base64_encode("");
+        $auth = "Basic " . base64_encode("test@test.com:test");
+        $headers = [
+            'Authorization' => $auth
+        ];
+
+        $response = $client->post('https://strippenkaart.collinfranckena.com/api/v1/register', [
+            'headers' => $headers
+            ]);
     }
 
     /**
