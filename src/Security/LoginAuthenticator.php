@@ -116,7 +116,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
      * @return Response|null
      * @throws \Exception
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
         $tokenGenerator = new TokenGenerator();
         $accessToken = $tokenGenerator->generate(20);

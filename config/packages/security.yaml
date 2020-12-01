@@ -26,9 +26,10 @@ security:
       algorithm: auto
       cost: 15
   role_hierarchy:
-    ROLE_BEHEERDER: []
-    ROLE_PENNINGMEESTER: [ROLE_BEHEERDER]
-    ROLE_SUPER_ADMIN: [ROLE_BEHEERDER, ROLE_PENNINGMEESTER]
+    ROLE_USER: []
+    ROLE_BEHEERDER: [ROLE_USER]
+    ROLE_PENNINGMEESTER: [ROLE_USER, ROLE_BEHEERDER]
+    ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_BEHEERDER, ROLE_PENNINGMEESTER]
 
 
     # activate different ways to authenticate
