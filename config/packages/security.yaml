@@ -26,7 +26,7 @@ security:
       algorithm: auto
       cost: 15
   role_hierarchy:
-    ROLE_USER: [] # zuja: Deze zou ik weglaten! Maakt het onduidelijk.
+    ROLE_USER: []
     ROLE_BEHEERDER: [ROLE_USER]
     ROLE_PENNINGMEESTER: [ROLE_USER, ROLE_BEHEERDER]
     ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_BEHEERDER, ROLE_PENNINGMEESTER]
@@ -44,4 +44,4 @@ security:
     - { path: ^/api/v1/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/v1/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/v1/confirm$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/, roles: ROLE_USER } # zuja: ik zou hier IS_AUTHENTICATED_FULLY van maken, stel je voor dat je een rol krijgt die geen ROLE_USER is
+    - { path: ^/, roles: ROLE_USER }
