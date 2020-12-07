@@ -11,6 +11,8 @@ class UserControllerTest extends TestCase
      * @test
      */
     public function loginAction(){
+        // zuja: een harde url verwijzing hier? Ik snap dat het een test is, maar zou dat niet beter in een config kunnen?
+        // of te wel een config voor alle basis test parameters?
         $client = new Client([
             'base_url' => 'http://localhost:8001',
             'defaults' => [
@@ -23,6 +25,7 @@ class UserControllerTest extends TestCase
             'Authorization' => $auth
         ];
 
+        // zuja: waarom heeft deze een andere poort?
         $response = $client->post('https://localhost:8000/api/v1/login', [
             'headers' => $headers
             ]);
@@ -39,6 +42,7 @@ class UserControllerTest extends TestCase
      */
     public function postNewAction($access_token)
     {
+        // zuja: waarom heeft deze een andere poort ten opzicht van bovenstaande functie?
         $client = new Client([
             'base_url' => 'http://localhost:8000',
             'defaults' => [
