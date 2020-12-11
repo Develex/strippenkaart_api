@@ -15,13 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class BaseController extends AbstractController
 {
-//    private $swift_mailer;
-//
-//    public function __construct(\ $swift_Mailer)
-//    {
-//        $this->swift_mailer = $swift_Mailer;
-//    }
+    private $swift_mailer;
 
+    public function __construct(\Swift_Mailer $swift_Mailer)
+    {
+        $this->swift_mailer = $swift_Mailer;
+    }
 
     /**
      * @param integer $code
@@ -85,7 +84,7 @@ class BaseController extends AbstractController
     public function sendMail($email, $data, \Swift_Mailer $swiftMailer)
     {
         $message = (new Swift_Message("Verfication Email"))
-            ->setFrom("dev.tmp.test.mailer@gmail.com")
+            ->setFrom('mailer@collinfranckena.com')
             ->setTo($email)
             ->setBody(
                 $this->renderView(

@@ -135,7 +135,7 @@ class UserController extends BaseController
      * Method for disabling or enabling a user.
      * Requires id in url.
      *
-     * @Route("/user/active/{id}", name="user_active", methods={"PATCH"})
+     * @Route("/user/{id}/active", name="user_active", methods={"PATCH"})
      * @IsGranted("ROLE_PENNINGMEESTER")
      *
      * @param Request $request
@@ -223,33 +223,33 @@ class UserController extends BaseController
         return $this->sendResponse(200, $user);
     }
 
-    /**
-     * Method for deleting a user entity.
-     * Requires id in json format.
-     *
-     * @Route("/user/{id}", name="user_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_PENNINGMEESTER")
-     *
-     * @param Request $request
-     * @param $id
-     * @return Response
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function deleteUser(Request $request, $id)
-    {
-        $requestData = json_decode($request->getContent());
-        if (!isset($id)) {
-            return $this->sendError(400, "Missing required parameters");
-        }
-        $user = $this->repository->find($id);
-        if (!$user) {
-            return $this->sendError(400, "No account found with this id");
-        }
-
-        $this->em->remove($user);
-        $this->em->flush();
-
-        return $this->sendResponse(200, "User Deleted");
-    }
+//    /**
+//     * Method for deleting a user entity.
+//     * Requires id in json format.
+//     *
+//     * @Route("/user/{id}", name="user_delete", methods={"DELETE"})
+//     * @IsGranted("ROLE_PENNINGMEESTER")
+//     *
+//     * @param Request $request
+//     * @param $id
+//     * @return Response
+//     * @throws ORMException
+//     * @throws OptimisticLockException
+//     */
+//    public function deleteUser(Request $request, $id)
+//    {
+//        $requestData = json_decode($request->getContent());
+//        if (!isset($id)) {
+//            return $this->sendError(400, "Missing required parameters");
+//        }
+//        $user = $this->repository->find($id);
+//        if (!$user) {
+//            return $this->sendError(400, "No account found with this id");
+//        }
+//
+//        $this->em->remove($user);
+//        $this->em->flush();
+//
+//        return $this->sendResponse(200, "User Deleted");
+//    }
 }
