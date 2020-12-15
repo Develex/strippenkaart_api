@@ -74,6 +74,11 @@ class User implements UserInterface, JsonSerializableAlias
     private $verificationCode;
 
     /**
+     * @ORM\OneToOne(targetEntity=Strippen::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $strippen;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -302,6 +307,23 @@ class User implements UserInterface, JsonSerializableAlias
     public function setVerificationCode(?string $verificationCode): self
     {
         $this->verificationCode = $verificationCode;
+
+        return $this;
+    }
+
+    public function getStrippen(): ?Strippen
+    {
+        return $this->strippen;
+    }
+
+    public function setStrippen(Strippen $strippen): self
+    {
+        $this->strippen = $strippen;
+
+        // set the owning side of the relation if necessary
+        if ($strippen->getUser() !== $this) {
+            $strippen->setUser($this);
+        }
 
         return $this;
     }
