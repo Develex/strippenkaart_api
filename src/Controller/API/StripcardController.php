@@ -9,8 +9,8 @@ use App\Repository\StripcardRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Env\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -85,7 +85,6 @@ class StripcardController extends BaseController
         $this->em->persist($stripcard);
         $this->em->flush();
 
-        $response = $this->serializer->serialize($stripcard, "json");
-        return $this->sendResponse(201, $response);
+        return $this->sendResponse(201, $stripcard);
     }
 }
