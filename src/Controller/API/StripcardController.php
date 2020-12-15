@@ -9,8 +9,14 @@ use App\Repository\StripcardRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * Class StripcardController
+ * @package App\Controller\API
+ * @Route("/stripcard", name="stripcard_")
+ */
 class StripcardController extends BaseController
 {
 
@@ -50,6 +56,17 @@ class StripcardController extends BaseController
         $this->serializer = $serializer;
     }
 
+    /**
+     * Method for creation of Stripcards.
+     *  The amount is set if available, otherwise it wil default to 0.
+     *
+     * @Route("/create", name="create", methods={"POST"})
+     * @IsGranted("ROLE_BEHEERDER")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function newStripcard()
     {
         $data = json_decode($request->getContent());
