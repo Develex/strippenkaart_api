@@ -9,6 +9,7 @@ use App\Repository\StripcardRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use http\Env\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -68,7 +69,7 @@ class StripcardController extends BaseController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function newStripcard()
+    public function newStripcard(Request $request)
     {
         $data = json_decode($request->getContent());
         if (!isset($data->user)) {
