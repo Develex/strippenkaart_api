@@ -1,8 +1,9 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\API;
 
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,6 +15,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class BaseController extends AbstractController
 {
+    private $swift_mailer;
+
+    public function __construct(\Swift_Mailer $swift_Mailer)
+    {
+        $this->swift_mailer = $swift_Mailer;
+    }
+
     /**
      * @param integer $code
      * @param array|string|null $data
@@ -60,5 +68,37 @@ class BaseController extends AbstractController
 
         return new Response(json_encode($msg), $code);
 
+    }
+
+    /**
+     * Sends a mail.
+     *
+     * uses the Gmail services.
+     * can be changed to different service in the .env file.
+     *
+     * @param $email String Email Adress of the recipient.
+     * @param $data
+     * @param \Swift_Mailer $swiftMailer
+     * @return bool status of the mailer.
+     */
+    public function sendMail($email, $data, \Swift_Mailer $swiftMailer)
+    {
+        $message = (new Swift_Message("Verfication Email"))
+            ->setFrom('mailer@collinfranckena.com')
+            ->setTo($email)
+            ->setBody(
+                $this->renderView(
+                    'emails/register.html.twig',
+                    [
+                        'email' => $email,
+                        'data' => $data
+                    ]
+                ),
+                'text/html'
+            );
+
+        $swiftMailer->send($message);
+
+        return $status = "failed";
     }
 }

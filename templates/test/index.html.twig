@@ -1,0 +1,334 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TestController!{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="modal" tabindex="-1" role="dialog" id="loginModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" target="_self" action="https://strippenkaart-api.dev-collin.nl/api/v1/login"
+                      id="loginForm">
+                    <div class="modal-body">
+                        <p>Voer hier uw inlog gegevens in.</p>
+                        <div class="form-group">
+                            <label for="loginEmail">Email:</label>
+                            <input class="form-control" type="email" name="email" id="loginEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Wachtwoord:</label>
+                            <input class="form-control" type="password" name="password" id="loginPassword">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Log in</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Strippenkaart API Tester</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Transactions</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Entities
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#users">Users</a>
+                        <a class="dropdown-item" href="#strips">Strippenkaarten</a>
+                        <a class="dropdown-item" href="#requests">Betaal Verzoeken</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <button id="logoutBtn" type="button" class="nav-link" style="display: none">Logout</button>
+                    <button id="loginBtn" type="button" class="nav-link" data-toggle="modal" data-target="#loginModal">Login</button>
+                </li>
+                <li class="nav-item navbar-brand d-none" id="userEmail">
+                    Placeholder
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="users" class="card w-100 mt-5">
+            <div class="card-header">Gebruikers</div>
+            <div class="card-body">
+                <button type="button" id="userRefresh">Refresh</button>
+                <table id="userTable">
+                </table>
+            </div>
+            <div class="card-header">Registration</div>
+            <div class="card-body">
+                <form method="POST" id="registrationForm">
+                    <label for="registrationEmail">Email:</label>
+                    <input class="form-control" type="text" id="registrationEmail"/>
+                    <label for="registrationPassword1">Password:</label>
+                    <input class="form-control" type="password" id="registrationPassword1"/>
+                    <label for="registrationPassword2">Retype Password:</label>
+                    <input class="form-control" type="password" id="registrationPassword2"/>
+                    <input class="btn btn-success" type="submit" id="registrationSubmit">
+                </form>
+            </div>
+            <div class="card-header">Activate</div>
+            <div class="card-body">
+                <form method="post" id="activateForm">
+                    <label for="activateUser">User:</label>
+                    <select id="activateUser" name="activateUser" class="form-control">
+                    </select>
+                    <input class="btn btn-success" type="submit" id="activateSubmit">
+                </form>
+            </div>
+            <div class="card-header">Roles</div>
+            <div class="card-body">
+                <form method="post" id="changeRole">
+                    <label for="roleUser">User:</label>
+                    <select id="roleUser" name="roleUser" class="form-control">
+                    </select>
+                    <label for="roleRole">Role:</label>
+                    <select id="roleRole" name="roleRole" class="form-control">
+                        <option value="ROLE_USER">User</option>
+                        <option value="ROLE_BEHEERDER">Beheerder</option>
+                        <option value="ROLE_PENNINGMEESTER">Penningmeester</option>
+                    </select>
+                    <input class="btn btn-success" type="submit" id="roleSubmit">
+                </form>
+            </div><div class="card-header">Roles</div>
+            <div class="card-body">
+                <form method="post" id="changeRole">
+                    <label for="roleUser">User:</label>
+                    <select id="roleUser" name="roleUser" class="form-control">
+                    </select>
+                    <label for="roleRole">Role:</label>
+                    <select id="roleRole" name="roleRole" class="form-control">
+                        <option value="ROLE_USER">User</option>
+                        <option value="ROLE_BEHEERDER">Beheerder</option>
+                        <option value="ROLE_PENNINGMEESTER">Penningmeester</option>
+                    </select>
+                    <input class="btn btn-success" type="submit" id="roleSubmit">
+                </form>
+            </div>
+        </div>
+        <div id="strips" class="card w-100 mt-5">
+            <div class="card-header">Strippenkaarten</div>
+
+        </div>
+        <div id="requests" class="card w-100 mt-5">
+            <div class="card-header">Betaal verzoeken</div>
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script rel="script" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://kingkode.com/datatables.editor.lite/js/altEditor/dataTables.altEditor.free.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        const baseUrl = "https://127.0.0.1:8000/api/v1/";
+
+        let toggleBtn = function () {
+            $('#loginBtn').toggle();
+            $('#logoutBtn').toggle();
+        }
+
+        $("#userRefresh").click(function (e) {
+            console.log("userRefresh");
+            getUserData();
+        });
+
+        $("#changeRole").submit(function (e) {
+            e.preventDefault();
+
+            changeRole();
+        })
+
+        $("#loginForm").submit(function (e) {
+            e.preventDefault();
+
+            login($('#loginEmail').val(), $('#loginPassword').val());
+        })
+
+        $("#registrationForm").submit(function (e) {
+            e.preventDefault();
+            if ($("#registrationPassword1").val() === $("#registrationPassword2").val()) {
+            register($('#registrationEmail').val(), $("#registrationPassword1").val());
+            }
+        })
+
+        $("#activateForm").submit(function (e) {
+            e.preventDefault();
+            activate();
+        })
+
+        const userTable = $("#userTable").DataTable({
+            columns: [
+                {title: "ID", data: "id"},
+                {title: "Email", data: "email"},
+                {title: "Roles", data: "roles"},
+                {title: "Active.", data: "active"}
+            ]
+        });
+
+        let getUserData = function () {
+    let url = baseUrl + "user";
+    let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': auth,
+            'Content-type': 'application/json'
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            sessionStorage.setItem("accessToken", data.access_token);
+
+            const responseData = Array.from(data.data);
+            console.log(responseData);
+            //add data to UserTable
+            userTable.clear();
+            userTable.rows.add(responseData);
+            userTable.draw();
+
+            //add data to userDropdown
+            const userDropdown = $('#activateUser');
+            const roleDropdown = $('#roleUser');
+
+            userDropdown.empty();
+            roleDropdown.empty();
+
+            $.each(responseData, function(key, value) {
+                userDropdown
+                    .append($("<option></option>")
+                        .attr("value", value.id)
+                        .text(value.email));
+                roleDropdown
+                    .append($("<option></option>")
+                        .attr("value", value.id)
+                        .text(value.email));
+            });
+
+        });
+}
+
+        let login = function (email, password) {
+            let url = baseUrl + "login";
+            let auth = 'Basic ' + btoa(email + ":" + password);
+            console.log(auth);
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': auth,
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    sessionStorage.setItem("accessToken", data.access_token);
+                    console.log(sessionStorage.getItem("accessToken"));
+                    $('#loginModal').modal("toggle");
+                    getUserData();
+                    toggleBtn();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
+        let register = function (email, password) {
+            const url = baseUrl + "register";
+            let data = {
+                "email": email,
+                "password": password
+            }
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-type": 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
+        let activate = function () {
+            const url = baseUrl + $('#activateUser').val() + "/activate";
+            let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    'Authorization': auth
+                },
+            })
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+        }
+
+        let changeRole = function () {
+            const url = baseUrl + "user/" + $('#roleUser').val() + "/roles";
+            let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+            console.log(url);
+            let value = $('#roleRole').val();
+
+            let data = {
+                "role" : value
+            }
+            fetch(url, {
+                method: "PATCH",
+                headers: {
+                    'Authorization': auth
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+                .then(data => console.log(data))
+            .catch(error => console.log(error))
+        }
+
+    });
+    </script>
+{% endblock %}
