@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Stripcard[]    findAll()
  * @method Stripcard[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class StrippenRepository extends ServiceEntityRepository
+class StripcardRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

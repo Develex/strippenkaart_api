@@ -2,58 +2,79 @@
 
 namespace App\Entity;
 
-use App\Repository\StrippenRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=StrippenRepository::class)
  */
-class Strippen
+class Stripcard implements JsonSerializable
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private
+        $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="strippen", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="stripcard", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private
+        $user;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $Amount;
+    private
+        $amount;
 
-    public function getId(): ?int
+    public
+    function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public
+    function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public
+    function setUser(User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getAmount(): ?int
+    public
+    function getAmount(): ?int
     {
-        return $this->Amount;
+        return $this->amount;
     }
 
-    public function setAmount(int $Amount): self
+    public
+    function setAmount(int $amount): self
     {
-        $this->Amount = $Amount;
+        $this->amount = $amount;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public
+    function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "user" => $this->user,
+            "amount" => $this->amount
+        ];
     }
 }
