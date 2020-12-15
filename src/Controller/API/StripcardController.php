@@ -65,6 +65,7 @@ class StripcardController extends BaseController
      * @Route("/create", name="create", methods={"POST"})
      * @IsGranted("ROLE_BEHEERDER")
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -86,5 +87,31 @@ class StripcardController extends BaseController
         $this->em->flush();
 
         return $this->sendResponse(201, $stripcard);
+    }
+
+    /**
+     *  Method for retrieving stripcard of a user.
+     *
+     * @Route("/{id}", name="get", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     *
+     * @param Integer $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function getStripcard($id)
+    {
+        if (!$id) {
+            return $this->sendError(400, "Missing required parameters");
+        }
+        if (!$this->userRepository->find($id)) {
+            return $this->sendError(400, "User not found");
+        }
+
+        $user = $this->userRepository->find($id);
+        $stripcard = $user->getStrippen();
+
+        return $this->sendResponse(200, $stripcard);
     }
 }
