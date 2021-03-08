@@ -10,7 +10,8 @@ class UserControllerTest extends TestCase
     /**
      * @test
      */
-    public function loginAction(){
+    public function loginAction()
+    {
         $client = new Client([
             'base_url' => 'http://localhost:8001',
             'defaults' => [
@@ -23,9 +24,9 @@ class UserControllerTest extends TestCase
             'Authorization' => $auth
         ];
 
-        $response = $client->post('https://localhost:8000/api/v1/login', [
+        $response = $client->post('https://localhost:8000/api/v1/security/login', [
             'headers' => $headers
-            ]);
+        ]);
         $this->assertEquals(201, $response->getStatusCode());
         $responseData = json_decode($response->getBody()->getContents());
         return $responseData->access_token;
@@ -96,7 +97,7 @@ class UserControllerTest extends TestCase
         );
 
         $headers = [
-            'Authorization' => 'Bearer '. $rData[1],
+            'Authorization' => 'Bearer ' . $rData[1],
         ];
 
         $response = $client->patch('https://localhost:8000/api/v1/user/' . $rData[0], [
@@ -132,7 +133,7 @@ class UserControllerTest extends TestCase
 //        $data = [];
 
         $headers = [
-            'Authorization' => 'Bearer ' .$rData[1],
+            'Authorization' => 'Bearer ' . $rData[1],
         ];
 
         $response = $client->get('https://localhost:8000/api/v1/user/' . $rData[0], [

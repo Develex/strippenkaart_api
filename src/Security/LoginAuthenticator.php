@@ -49,7 +49,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
-        if (($request->getPathInfo() == '/api/v1/login' || $request->isMethod('POST')) &&
+        if (($request->getPathInfo() == '/api/v1/auth/login' || $request->isMethod('POST')) &&
             ($request->headers->has('Authorization') && 0 === strpos($request->headers->get('Authorization'), 'Basic '))) {
             return true;
         };
