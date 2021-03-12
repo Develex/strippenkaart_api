@@ -168,12 +168,18 @@
 
     <script>
         $(document).ready(function () {
-            const baseUrl = "https://127.0.0.1:8000/api/v1/";
 
             let toggleBtn = function () {
                 $('#loginBtn').toggle();
                 $('#logoutBtn').toggle();
             }
+
+            if (sessionStorage.getItem("accessToken") != null) {
+                toggleBtn();
+            }
+
+            const baseUrl = "https://127.0.0.1:8000/api/v1/";
+
 
             $("#userRefresh").click(function (e) {
                 console.log("userRefresh");
@@ -192,7 +198,8 @@
                 login($('#loginEmail').val(), $('#loginPassword').val());
             });
 
-            $("logoutBtn").click(function (e) {
+            $("#logoutBtn").click(function (e) {
+                console.log("logout");
                 logout();
             });
 
@@ -312,7 +319,7 @@
             }
 
             let activate = function () {
-                const url = baseUrl + $('#activateUser').val() + "/activate";
+                const url = baseUrl + "auth/" + $('#activateUser').val() + "/activate";
                 let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
 
                 fetch(url, {
@@ -321,7 +328,10 @@
                         'Authorization': auth
                     },
                 })
-                    .then(response => console.log(response))
+                    .then(response => response.json())
+                    .then(data => {
+                        sessionStorage.setItem("accessToken", data.access_token);
+                    })
                     .catch(error => console.log(error))
             }
 
@@ -330,7 +340,6 @@
                 let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
                 console.log(url);
                 let value = $('#roleRole').val();
-
                 let data = {
                     "role": value
                 }
@@ -341,7 +350,7 @@
                     },
                     body: JSON.stringify(data)
                 })
-                    .then(response => response.json())
+                    // .then(response => response.json())
                     .then(data => console.log(data))
                     .catch(error => console.log(error))
             }
@@ -351,11 +360,17 @@
                 let auth = "Bearer " + sessionStorage.getItem("accessToken");
 
                 fetch(url, {
-                    method: "GET",
+                    method: "POST",
                     headers: {
                         'Authorization': auth
                     }
-                }).catch(error => console.log(error))
+                })
+                    .then(data => {
+                        sessionStorage.removeItem("accessToken");
+                        toggleBtn();
+                        console.log(sessionStorage.getItem("accessToken"));
+                    })
+                    .catch(error => console.log(error))
             }
 
         });

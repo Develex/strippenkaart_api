@@ -204,7 +204,6 @@ class UserController extends BaseController
     public function changeRole(Request $request, $id)
     {
         $requestData = json_decode($request->getContent());
-        dump($requestData);
         if (!isset($id) || !isset($requestData->role)) {
             return $this->sendError(400, "Missing required parameters");
         }
@@ -215,11 +214,9 @@ class UserController extends BaseController
         if (!$user) {
             return $this->sendError(400, "No account found with this id");
         }
-
         $user->setRoles(["$requestData->role"]);
         $this->em->flush();
 
-//        $response = $this->serializer->serialize($user, 'json');
         return $this->sendResponse(200, $user);
     }
 

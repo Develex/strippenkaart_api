@@ -165,12 +165,12 @@ class SecurityController extends BaseController
             $user->setActive(true);
             $this->em->flush();
         }
-        $this->sendResponse(200, "Account updated");
+        return $this->sendResponse(200, "Account updated");
     }
 
     /**
      * Method voor het uitloggen en accesstoken te invalideren.
-     * @Route("/auth/logout", name="api_logout", methods={"GET"})
+     * @Route("/auth/logout", name="api_logout", methods={"POST"})
      */
     public function logout()
     {

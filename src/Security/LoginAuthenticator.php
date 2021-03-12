@@ -92,7 +92,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
         $decodedCredentials = base64_decode($credentials);
         $arrayCredentials = explode(':', $decodedCredentials);
         return $this->encoder->isPasswordValid($user, $arrayCredentials[1]);
-        //return false|true;
+//        dd($this->encoder->isPasswordValid($user, $arrayCredentials[1]));
     }
 
     /**
