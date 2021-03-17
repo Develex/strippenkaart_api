@@ -2,6 +2,7 @@
 
 namespace App\Controller\API;
 
+use App\Entity\Stripcard;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -81,6 +82,8 @@ class SecurityController extends BaseController
         $user->setPassword($encodedPassword);
         $user->setExpires(true);
         $user->setVerificationCode($code);
+        $stripcard = new Stripcard();
+        $user->setStrippen($stripcard);
         $this->em->persist($user);
         $this->em->flush();
 

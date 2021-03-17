@@ -127,25 +127,29 @@
                     <input class="btn btn-success" type="submit" id="roleSubmit">
                 </form>
             </div>
-            <div class="card-header">Roles</div>
-            <div class="card-body">
-                <form method="post" id="changeRole">
-                    <label for="roleUser">User:</label>
-                    <select id="roleUser" name="roleUser" class="form-control">
-                    </select>
-                    <label for="roleRole">Role:</label>
-                    <select id="roleRole" name="roleRole" class="form-control">
-                        <option value="ROLE_USER">User</option>
-                        <option value="ROLE_BEHEERDER">Beheerder</option>
-                        <option value="ROLE_PENNINGMEESTER">Penningmeester</option>
-                    </select>
-                    <input class="btn btn-success" type="submit" id="roleSubmit">
-                </form>
-            </div>
         </div>
         <div id="strips" class="card w-100 mt-5">
             <div class="card-header">Strippenkaarten</div>
+            <div class="card-body">
+                <form method="get" id="getStrippen">
+                    <select id="strippenDropdown" name="strippenDropdown" class="form-control">
 
+                    </select>
+                    <input value="Haal Strippenkaart op" class="btn btn-success" type="submit" id="getStrippen">
+                </form>
+            </div>
+            <div class="card-header">update</div>
+            <div class="card-body">
+                <form method="post" id="updateStrippen">
+                    <label for="strippenUpdateDropdown">User:</label>
+                    <select id="strippenUpdateDropdown" name="strippenUpdateDropdown" class="form-control">
+
+                    </select>
+                    <label for="strippenChange">Change:</label>
+                    <input type="number" id="strippenChange" name="strippenChange" class="form-control">
+                    <input value="Update" class="btn btn-success" type="submit" id="updateStrippen">
+                </form>
+            </div>
         </div>
         <div id="requests" class="card w-100 mt-5">
             <div class="card-header">Betaal verzoeken</div>
@@ -190,6 +194,48 @@
                 e.preventDefault();
 
                 changeRole();
+            });
+
+            $("#getStrippen").submit(function (e) {
+                e.preventDefault();
+                url = baseUrl + "stripcard/" + $("#strippenDropdown").val();
+                let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+
+                fetch(url, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': auth,
+                        'Content-type': 'application/json'
+                    },
+                }).then(response => response.json())
+                    .then(data => {
+                        sessionStorage.setItem("accessToken", data.access_token);
+
+                        console.log(data.data);
+                    })
+                    .catch(error => console.log(error));
+            });
+
+            $("#updateStrippen").submit(function (e) {
+                e.preventDefault();
+                url = baseUrl + "stripcard/" + $("#strippenDropdown").val();
+                let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+                $data = {"change": $("#strippenChange").val(), "user": $("#strippenUpdateDropdown").val()};
+
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        'Authorization': auth,
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify($data)
+                }).then(response => response.json())
+                    .then(data => {
+                        sessionStorage.setItem("accessToken", data.access_token);
+
+                        console.log(data.data);
+                    })
+                    .catch(error => console.log(error));
             });
 
             $("#loginForm").submit(function (e) {
@@ -250,9 +296,13 @@
                         //add data to userDropdown
                         const userDropdown = $('#activateUser');
                         const roleDropdown = $('#roleUser');
+                        const strippenDropdown = $('#strippenDropdown');
+                        const strippenUpdateDropdown = $('#strippenUpdateDropdown');
 
                         userDropdown.empty();
                         roleDropdown.empty();
+                        strippenDropdown.empty();
+                        strippenUpdateDropdown.empty();
 
                         $.each(responseData, function (key, value) {
                             userDropdown
@@ -263,8 +313,15 @@
                                 .append($("<option></option>")
                                     .attr("value", value.id)
                                     .text(value.email));
+                            strippenDropdown
+                                .append($("<option></option>")
+                                    .attr("value", value.id)
+                                    .text(value.email));
+                            strippenUpdateDropdown
+                                .append($("<option></option>")
+                                    .attr("value", value.id)
+                                    .text(value.email));
                         });
-
                     })
                     .catch((error) => {
                         console.log(error);

@@ -114,4 +114,34 @@ class StripcardController extends BaseController
 
         return $this->sendResponse(200, $stripcard);
     }
+
+    /**
+     * Method for updating a stripcard of a user.
+     *
+     * @Route("/{id}", name="update", methods={"PUT", "POST"})
+     * @IsGranted("ROLE_BEHEERDER")
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function updateStripcard(Request $request, $id)
+    {
+        $requestData = json_decode($request->getContent());
+        if (!$id) {
+            return $this->sendError(400, "Missing required parameters");
+        }
+        if (!$this->userRepository->find($id)) {
+            return $this->sendError(400, "User not found");
+        }
+
+        $stripcard = $this->userRepository->find($id)->getStrippen();
+        $oldAmount = $stripcard->getAmount();
+        $stripcard->setAmount($oldAmount + $requestData->change);
+        $this->em->flush();
+
+        return $this->sendResponse(200, $stripcard);
+    }
 }
