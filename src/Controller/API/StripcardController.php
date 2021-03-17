@@ -119,7 +119,7 @@ class StripcardController extends BaseController
      * Method for updating a stripcard of a user.
      *
      * @Route("/{id}", name="update", methods={"PUT", "POST"})
-     * @IsGranted("ROLE_BEHEERDER")
+     * @IsGranted("ROLE_STAMPER")
      *
      * @param Request $request
      * @param $id
