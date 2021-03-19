@@ -2,6 +2,7 @@
 
 namespace App\Controller\API;
 
+use App\Entity\Stripcard;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,7 +46,7 @@ class SecurityController extends BaseController
     }
 
     /**
-     * @Route("/login", name="login", methods={"POST"})
+     * @Route("/auth/login", name="login", methods={"POST"})
      *
      * @return Response
      */
@@ -55,7 +56,7 @@ class SecurityController extends BaseController
     }
 
     /**
-     * @Route("/register", name="register", methods={"POST"})
+     * @Route("/auth/register", name="register", methods={"POST"})
      *
      * @param Request $request
      * @param \Swift_Mailer $swiftMailer
@@ -81,56 +82,14 @@ class SecurityController extends BaseController
         $user->setPassword($encodedPassword);
         $user->setExpires(true);
         $user->setVerificationCode($code);
+        $stripcard = new Stripcard();
+        $user->setStrippen($stripcard);
         $this->em->persist($user);
         $this->em->flush();
 
         $this->sendMail($data->email, ['code' => $code], $swiftMailer);
 
         return $this->sendResponse(200, "Account created.");
-    }
-
-    /**
-     * Method for confirming a email of a account
-     *
-     * requires verification code in GET.
-     * TODO when user is verified redirect to Front-end Page.
-     *
-     *
-     * Heb de method van POST naar GET tijdelijk veranderd voor testing.
-     * @Route("/confirm", name="confirm", methods={"GET"})
-     *
-     * @param Request $request
-     */
-    public function confirm(Request $request)
-    {
-        $data = $request->query->all();
-        $user = $this->em->getRepository(User::class)->findOneBy(['verificationCode' => $data['c']]);
-        if (!$user)
-            dd("no user found");
-        else {
-            $user->setVerified(true);
-            $user->setActive(true);
-            $this->em->flush();
-            dd($user);
-        }
-    }
-
-    /**
-     * Method voor het activeren van een account.
-     * @Route("/{id}/activate", name="activate", methods={"POST"})
-     *
-     * @param Request $request
-     * @param $id
-     */
-    public function activate(Request $request, $id) {
-        $user = $this->em->getRepository(User::class) ->find($id);
-        if (!$user)
-            $this->sendError(400, "User not found");
-        else {
-            $user->setActive(true);
-            $this->em->flush();
-        }
-        $this->sendResponse(200, "Account updated");
     }
 
     /**
@@ -165,6 +124,60 @@ class SecurityController extends BaseController
             $pieces [] = $keyspace[random_int(0, $max)];
         }
         return implode('', $pieces);
+    }
+
+    /**
+     * Method for confirming a email of a account
+     *
+     * requires verification code in GET.
+     * TODO when user is verified redirect to Front-end Page.
+     *
+     *
+     * Heb de method van POST naar GET tijdelijk veranderd voor testing.
+     * @Route("/auth/confirm", name="confirm", methods={"GET"})
+     *
+     * @param Request $request
+     */
+    public function confirm(Request $request)
+    {
+        $data = $request->query->all();
+        $user = $this->em->getRepository(User::class)->findOneBy(['verificationCode' => $data['c']]);
+        if (!$user)
+            dd("no user found");
+        else {
+            $user->setVerified(true);
+            $user->setActive(true);
+            $this->em->flush();
+            dd($user);
+        }
+    }
+
+    /**
+     * Method voor het activeren van een account.
+     * @Route("/auth/{id}/activate", name="activate", methods={"POST"})
+     *
+     * @param Request $request
+     * @param $id
+     */
+    public function activate(Request $request, $id)
+    {
+        $user = $this->em->getRepository(User::class)->find($id);
+        if (!$user)
+            $this->sendError(400, "User not found");
+        else {
+            $user->setActive(true);
+            $this->em->flush();
+        }
+        return $this->sendResponse(200, "Account updated");
+    }
+
+    /**
+     * Method voor het uitloggen en accesstoken te invalideren.
+     * @Route("/auth/logout", name="api_logout", methods={"POST"})
+     */
+    public function logout()
+    {
+        throw new \Exception("If you see this, something is bad happened");
     }
 
 }

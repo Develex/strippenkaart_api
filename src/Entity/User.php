@@ -74,6 +74,11 @@ class User implements UserInterface, JsonSerializableAlias
     private $verificationCode;
 
     /**
+     * @ORM\OneToOne(targetEntity=Stripcard::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $strippen;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -118,30 +123,6 @@ class User implements UserInterface, JsonSerializableAlias
     public function getUsername(): string
     {
         return (string)$this->email;
-    }
-
-    /**
-     * @return array
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    /**
-     * @param array $roles
-     * @return $this
-     */
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     /**
@@ -190,11 +171,6 @@ class User implements UserInterface, JsonSerializableAlias
         return $this->expires;
     }
 
-    public function isExpired(): ?bool
-    {
-        return $this->getExpiresAt() <= new DateTime('now');
-    }
-
     /**
      * @param bool $expires
      * @return $this
@@ -204,6 +180,11 @@ class User implements UserInterface, JsonSerializableAlias
         $this->expires = $expires;
 
         return $this;
+    }
+
+    public function isExpired(): ?bool
+    {
+        return $this->getExpiresAt() <= new DateTime('now');
     }
 
     /**
@@ -280,7 +261,6 @@ class User implements UserInterface, JsonSerializableAlias
         return !$this->active;
     }
 
-
     /**
      * @inheritDoc
      */
@@ -294,6 +274,30 @@ class User implements UserInterface, JsonSerializableAlias
         ];
     }
 
+    /**
+     * @return array
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param array $roles
+     * @return $this
+     */
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
     public function getVerificationCode(): ?string
     {
         return $this->verificationCode;
@@ -302,6 +306,23 @@ class User implements UserInterface, JsonSerializableAlias
     public function setVerificationCode(?string $verificationCode): self
     {
         $this->verificationCode = $verificationCode;
+
+        return $this;
+    }
+
+    public function getStrippen(): ?Stripcard
+    {
+        return $this->strippen;
+    }
+
+    public function setStrippen(Stripcard $strippen): self
+    {
+        $this->strippen = $strippen;
+
+        // set the owning side of the relation if necessary
+        if ($strippen->getUser() !== $this) {
+            $strippen->setUser($this);
+        }
 
         return $this;
     }
