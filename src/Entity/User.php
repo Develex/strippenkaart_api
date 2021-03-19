@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable as JsonSerializableAlias;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -79,12 +81,18 @@ class User implements UserInterface, JsonSerializableAlias
     private $strippen;
 
     /**
+     * @ORM\OneToMany(targetEntity=History::class, mappedBy="ChangedBy")
+     */
+    private $histories;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->active = false;
         $this->verified = false;
+        $this->histories = new ArrayCollection();
     }
 
     /**
@@ -322,6 +330,36 @@ class User implements UserInterface, JsonSerializableAlias
         // set the owning side of the relation if necessary
         if ($strippen->getUser() !== $this) {
             $strippen->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|History[]
+     */
+    public function getHistories(): Collection
+    {
+        return $this->histories;
+    }
+
+    public function addHistory(History $history): self
+    {
+        if (!$this->histories->contains($history)) {
+            $this->histories[] = $history;
+            $history->setChangedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(History $history): self
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getChangedBy() === $this) {
+                $history->setChangedBy(null);
+            }
         }
 
         return $this;

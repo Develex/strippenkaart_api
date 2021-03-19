@@ -138,8 +138,8 @@ class StripcardController extends BaseController
         }
 
         $stripcard = $this->userRepository->find($id)->getStrippen();
-        $oldAmount = $stripcard->getAmount();
-        $stripcard->setAmount($oldAmount + $requestData->change);
+        $oldAmount = $stripcard->getStrippen();
+        $stripcard->setStrippen($oldAmount + $requestData->change);
         $this->em->flush();
 
         return $this->sendResponse(200, $stripcard);
