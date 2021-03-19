@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\StatusRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=StatusRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\StatusRepository::class)
  */
-class Status extends Payment
+class Status
 {
     /**
      * @ORM\Id

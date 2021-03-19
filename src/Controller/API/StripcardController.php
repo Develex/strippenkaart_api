@@ -100,17 +100,16 @@ class StripcardController extends BaseController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function getStripcard($id)
+    public function getStripcard(int $id = 0)
     {
-        if (!$id) {
-            return $this->sendError(400, "Missing required parameters");
-        }
-        if (!$this->userRepository->find($id)) {
+        if ($id == 0) {
+            $stripcard = $this->getDoctrine()->getRepository("App:Stripcard")->findAll();
+        } else if (!$this->userRepository->find($id)) {
             return $this->sendError(400, "User not found");
+        } else {
+            $user = $this->userRepository->find($id);
+            $stripcard = $user->getStrippen();
         }
-
-        $user = $this->userRepository->find($id);
-        $stripcard = $user->getStrippen();
 
         return $this->sendResponse(200, $stripcard);
     }

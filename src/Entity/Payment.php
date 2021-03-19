@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\PaymentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=PaymentRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\PaymentRepository::class)
  */
-class Payment extends Stripcard
+class Payment
 {
     /**
      * @ORM\Id

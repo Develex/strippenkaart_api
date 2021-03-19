@@ -82,8 +82,13 @@ class SecurityController extends BaseController
         $user->setPassword($encodedPassword);
         $user->setExpires(true);
         $user->setVerificationCode($code);
+
         $stripcard = new Stripcard();
         $user->setStrippen($stripcard);
+
+//        return $this->sendResponse(222, [$user, $stripcard]);
+
+        $this->em->persist($stripcard);
         $this->em->persist($user);
         $this->em->flush();
 

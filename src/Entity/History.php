@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\HistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=HistoryRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\HistoryRepository::class)
  */
-class History extends User
+class History
 {
     /**
      * @ORM\Id

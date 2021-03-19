@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\TableNameRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TableNameRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\TableNameRepository::class)
  */
-class TableName extends History
+class TableName
 {
     /**
      * @ORM\Id

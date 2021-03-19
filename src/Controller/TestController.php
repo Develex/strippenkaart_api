@@ -10,11 +10,23 @@ class TestController extends AbstractController
 {
     /**
      * @Route("/test", name="test")
+     *
+     * @return Response
      */
     public function index(): Response
     {
         return $this->render('test/index.html.twig', [
-            'controller_name' => 'TestController',
+        ]);
+    }
+
+    /**
+     * @Route("/test/strippenkaart", name="test_strippenkaart")
+     *
+     * @return Response
+     */
+    public function stripcardAction(): Response
+    {
+        return $this->render('test/stripcard.html.twig', [
         ]);
     }
 }

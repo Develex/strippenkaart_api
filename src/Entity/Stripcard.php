@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
 /**
- * @ORM\Entity(repositoryClass=StrippenRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\StripcardRepository::class)
  */
-class Stripcard extends User implements JsonSerializable
+class Stripcard implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -37,8 +37,10 @@ class Stripcard extends User implements JsonSerializable
 
     public function __construct()
     {
-        parent::__construct();
+//        parent::__construct();
         $this->payments = new ArrayCollection();
+
+        $this->strips = 0;
     }
 
     public function getId(): ?int
@@ -78,7 +80,7 @@ class Stripcard extends User implements JsonSerializable
         return [
             "id" => $this->id,
             "user" => $this->user,
-            "amount" => $this->strips
+            "strips" => $this->strips
         ];
     }
 
