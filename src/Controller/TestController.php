@@ -20,13 +20,24 @@ class TestController extends AbstractController
     }
 
     /**
-     * @Route("/test/strippenkaart", name="test_strippenkaart")
+     * @Route("/test/strippenkaart", name="test_stripcard")
      *
      * @return Response
      */
     public function stripcardAction(): Response
     {
         return $this->render('test/stripcard.html.twig', [
+        ]);
+    }
+
+    /**
+     * @Route("/test/betalingen", name="test_payment")
+     *
+     * @return Response
+     */
+    public function paymentAction(): Response
+    {
+        return $this->render('test/payment.html.twig', [
         ]);
     }
 }

@@ -10,79 +10,7 @@
 
 {% block body %}
 
-    <div class="modal" tabindex="-1" role="dialog" id="loginModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Login</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form method="post" target="_self"
-                      action="https://strippenkaart-api.dev-collin.nl/api/v1/auth/login"
-                      id="loginForm">
-                    <div class="modal-body">
-                        <p>Voer hier uw inlog gegevens in.</p>
-                        <div class="form-group">
-                            <label for="loginEmail">Email:</label>
-                            <input class="form-control" type="email" name="email" id="loginEmail">
-                        </div>
-                        <div class="form-group">
-                            <label for="loginPassword">Wachtwoord:</label>
-                            <input class="form-control" type="password" name="password" id="loginPassword">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Log in</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Strippenkaart API Tester</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Transactions</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Entities
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#users">Users</a>
-                        <a class="dropdown-item" href="#strips">Strippenkaarten</a>
-                        <a class="dropdown-item" href="#requests">Betaal Verzoeken</a>
-                    </div>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <button id="logoutBtn" type="button" class="nav-link" style="display: none">Logout</button>
-                    <button id="loginBtn" type="button" class="nav-link" data-toggle="modal" data-target="#loginModal">
-                        Login
-                    </button>
-                </li>
-                <li class="nav-item navbar-brand d-none" id="userEmail">
-                    Placeholder
-                </li>
-            </ul>
-        </div>
-    </nav>
     <div class="container">
         <div id="users" class="card w-100 mt-5">
             <div class="card-header">Gebruikers</div>
@@ -161,29 +89,9 @@
 {% endblock %}
 
 {% block javascripts %}
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
-    <script rel="script" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-    <script src="https://kingkode.com/datatables.editor.lite/js/altEditor/dataTables.altEditor.free.js"></script>
-
     <script>
         $(document).ready(function () {
-
-            let toggleBtn = function () {
-                $('#loginBtn').toggle();
-                $('#logoutBtn').toggle();
-            }
-
-            if (sessionStorage.getItem("accessToken") != null) {
-                toggleBtn();
-            }
-
             const baseUrl = "https://127.0.0.1:8000/api/v1/";
-
 
             $("#userRefresh").click(function (e) {
                 console.log("userRefresh");
@@ -236,17 +144,6 @@
                         console.log(data.data);
                     })
                     .catch(error => console.log(error));
-            });
-
-            $("#loginForm").submit(function (e) {
-                e.preventDefault();
-
-                login($('#loginEmail').val(), $('#loginPassword').val());
-            });
-
-            $("#logoutBtn").click(function (e) {
-                console.log("logout");
-                logout();
             });
 
             $("#registrationForm").submit(function (e) {
@@ -328,31 +225,6 @@
                     });
             }
 
-            let login = function (email, password) {
-                let url = baseUrl + "auth/login";
-                let auth = 'Basic ' + btoa(email + ":" + password);
-                console.log(auth);
-
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': auth,
-                        'Content-Type': 'application/json'
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        sessionStorage.setItem("accessToken", data.access_token);
-                        console.log(sessionStorage.getItem("accessToken"));
-                        $('#loginModal').modal("toggle");
-                        getUserData();
-                        toggleBtn();
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            }
-
             let register = function (email, password) {
                 const url = baseUrl + "auth/register";
                 let data = {
@@ -411,25 +283,6 @@
                     .then(data => console.log(data))
                     .catch(error => console.log(error))
             }
-
-            let logout = function () {
-                const url = baseUrl + "auth/logout";
-                let auth = "Bearer " + sessionStorage.getItem("accessToken");
-
-                fetch(url, {
-                    method: "POST",
-                    headers: {
-                        'Authorization': auth
-                    }
-                })
-                    .then(data => {
-                        sessionStorage.removeItem("accessToken");
-                        toggleBtn();
-                        console.log(sessionStorage.getItem("accessToken"));
-                    })
-                    .catch(error => console.log(error))
-            }
-
         });
     </script>
 {% endblock %}
