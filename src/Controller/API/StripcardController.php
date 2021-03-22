@@ -135,10 +135,12 @@ class StripcardController extends BaseController
         if (!$this->userRepository->find($id)) {
             return $this->sendError(400, "User not found");
         }
-
         $stripcard = $this->userRepository->find($id)->getStrippen();
-        $oldAmount = $stripcard->getStrippen();
-        $stripcard->setStrippen($oldAmount + $requestData->change);
+        $oldAmount = $stripcard->getStrips();
+        if (($oldAmount + $requestData->change < 0) && ($requestData->change < 0)) {
+            return $this->sendError(422, "User has not enough strips for exchange.");
+        }
+        $stripcard->setStrips($oldAmount + $requestData->change);
         $this->em->flush();
 
         return $this->sendResponse(200, $stripcard);
