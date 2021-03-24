@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=App\Repository\PaymentRepository::class)
  */
-class Payment
+class Payment implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -51,7 +51,7 @@ class Payment
      * @ORM\ManyToOne(targetEntity=Status::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Status;
+    private $status;
 
     public function getId(): ?int
     {
@@ -132,13 +132,27 @@ class Payment
 
     public function getStatus(): ?Status
     {
-        return $this->Status;
+        return $this->status;
     }
 
-    public function setStatus(?Status $Status): self
+    public function setStatus(?Status $status): self
     {
-        $this->Status = $Status;
+        $this->status = $status;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "quantity" => $this->quantity,
+            "stripcardId" => $this->stripcardId,
+            "amount" => $this->amount,
+            "discount" => $this->discount,
+            "dateCreated" => $this->dateCreated,
+            "datePaid" => $this->datePaid,
+            "status" => $this->status
+        ];
     }
 }
