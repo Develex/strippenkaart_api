@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TestController!{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div id="users" class="card w-100 mt-5">
+            <div class="card-header">
+                Strippenkaart
+            </div>
+            <div class="card-body">
+                <button type="button" id="getStrippen">Refresh</button>
+                <table id="strippenTable">
+                </table>
+            </div>
+            <div class="card-header">
+                Update
+            </div>
+            <div class="card-body">
+                <form id="updateStrippen" method="POST">
+                    <label for="userDropdown" class="form-check-label">User:</label>
+                    <select id="userDropdown" name="userDropdown" class="form-control">
+                    </select>
+                    <label for="change" class="form-check-label">Aantal Strippen (+/-):</label>
+                    <input name="change" id="change" type="number" class="form-control">
+                    <input type="submit" value="Update" class="btn btn-success">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            const baseUrl = "https://127.0.0.1:8000/api/v1/";
+
+            $("#getStrippen").click(function (e) {
+                url = baseUrl + "stripcard/ "
+                let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+
+                fetch(url, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': auth,
+                        'Content-type': 'application/json'
+                    },
+                }).then(response => response.json())
+                    .then(data => {
+                        sessionStorage.setItem("accessToken", data.access_token);
+                        updateTable(data);
+                        updateStrippen(data);
+                        console.log(data);
+                    })
+                    .catch(error => console.log(error));
+            });
+
+            $("#updateStrippen").submit(function (e) {
+                e.preventDefault();
+                url = baseUrl + "stripcard/" + $("#userDropdown").val();
+                let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+                $data = {"change": $("#change").val(), "user": $("#strippenUpdateDropdown").val()};
+
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        'Authorization': auth,
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify($data)
+                }).then(response => response.json())
+                    .then(data => {
+                        sessionStorage.setItem("accessToken", data.access_token);
+                        console.log(data.data);
+                    })
+                    .catch(error => console.log(error));
+            });
+
+            const strippenTable = $("#strippenTable").DataTable({
+                columns: [
+                    {title: "ID", data: "id"},
+                    {title: "User ID", data: "user.email"},
+                    {title: "Strippen", data: "strips"}
+                ]
+            });
+
+            let updateTable = function (data) {
+                const responseData = Array.from(data.data);
+                strippenTable.clear();
+                strippenTable.rows.add(responseData);
+                strippenTable.draw();
+            }
+
+
+            let updateStrippen = function (data) {
+                $("#userDropdown").empty();
+                const responseData = Array.from(data.data);
+                $.each(responseData, function (key, value) {
+                    console.log(value.user);
+                    $("#userDropdown")
+                        .append($("<option></option>")
+                            .attr("value", value.user.id)
+                            .text(value.user.id + " - " + value.user.email));
+                });
+            }
+        });
+    </script>
+{% endblock %}

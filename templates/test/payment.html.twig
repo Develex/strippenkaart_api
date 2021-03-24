@@ -1,0 +1,207 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TestController!{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div id="users" class="card w-100 mt-5">
+            <div class="card-header">
+                Betalingen
+            </div>
+            <div class="card-body">
+                <button type="button" id="getPayment">Refresh</button>
+                <table id="paymentTable">
+                </table>
+            </div>
+            <div class="card-header">
+                Update
+            </div>
+            <div class="card-body">
+                <form id="updatePayment" method="POST">
+                    <label for="paymentDropdown" class="form-check-label">Payment:</label>
+                    <select id="paymentDropdown" name="paymentDropdown" class="form-control">
+                    </select>
+                    <label for="amount" class="form-check-label">Amount:</label>
+                    <input name="amount" id="amount" type="number" step=".01" class="form-control">
+                    <label for="discount" class="form-check-label">Discount:</label>
+                    <input name="discount" id="discount" type="number" step=".01" class="form-control">
+                    <label for="quantity" class="form-check-label">Amount of Strips:</label>
+                    <input name="quantity" id="quantity" type="number" step="1" class="form-control">
+                    <label for="paid" class="form-check-label">Is Paid:</label>
+                    <input name="paid" id="paid" type="checkbox" class="form-check-inline">
+                    <input type="submit" value="Update" class="btn btn-success form-control">
+                </form>
+            </div>
+            <div class="card-header">
+                Create
+            </div>
+            <div class="card-body">
+                <form id="createPayment" method="POST">
+                    <label for="userDropdown" class="form-check-label">User:</label>
+                    <select id="userDropdown" name="userDropdown" class="form-control">
+                    </select>
+                    <label for="createAmount" class="form-check-label">Amount:</label>
+                    <input name="createAmount" id="createAmount" type="number" step=".01" class="form-control" required>
+                    <label for="createDiscount" class="form-check-label">Discount:</label>
+                    <input name="createDiscount" id="createDiscount" type="number" step=".01" class="form-control">
+                    <label for="createQuantity" class="form-check-label">Amount of Strips:</label>
+                    <input name="createQuantity" id="createQuantity" type="number" step="1" class="form-control"
+                           required>
+                    <label for="createPaid" class="form-check-label">Is Paid:</label>
+                    <input name="createPaid" id="createPaid" type="checkbox" class="form-check-inline">
+                    <input type="submit" value="Create" class="btn btn-success form-control">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            const baseUrl = "https://127.0.0.1:8000/api/v1/";
+
+            $("#getPayment").click(function (e) {
+                url = baseUrl + "payment/ "
+                let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+
+                fetch(url, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': auth,
+                        'Content-type': 'application/json'
+                    },
+                }).then(response => response.json())
+                    .then(data => {
+                        sessionStorage.setItem("accessToken", data.access_token);
+                        updateTable(data);
+                        updatePayment(data);
+                        getUsers(data);
+                        console.log(data);
+                    })
+                    .catch(error => console.log(error));
+            });
+
+            $("#updatePayment").submit(function (e) {
+                e.preventDefault();
+                let url = baseUrl + "payment/" + $("#paymentDropdown").val();
+                let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+                let data = {
+                    "amount": $("#amount").val(),
+                    "discount": $("#discount").val(),
+                    "quantity": $("#quantity").val(),
+                    "paid": $("#paid").prop('checked')
+                };
+
+                fetch(url, {
+                    method: "PATCH",
+                    headers: {
+                        'Authorization': auth,
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then(response => response.json())
+                    .then(data => {
+                        sessionStorage.setItem("accessToken", data.access_token);
+                        console.log(data.data);
+                    })
+                    .catch(error => console.log(error));
+            });
+
+            $("#createPayment").submit(function (e) {
+                e.preventDefault();
+                let url = baseUrl + "payment/create";
+                let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+                let data = {
+                    "userId": $("#userDropdown").val(),
+                    "amount": $("#createAmount").val(),
+                    "discount": $("#createDiscount").val(),
+                    "quantity": $("#createQuantity").val(),
+                    "paid": $("#createPaid").prop('checked')
+                };
+                console.log(data);
+
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        'Authorization': auth,
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).then(response => response.json())
+                    .then(data => {
+                        sessionStorage.setItem("accessToken", data.access_token);
+                        console.log(data.data);
+                    })
+                    .catch(error => console.log(error));
+            });
+
+            const paymentTable = $("#paymentTable").DataTable({
+                columns: [
+                    {title: "ID", data: "id"},
+                    {title: "Strippenkaart ID", data: "stripcardId.id"},
+                    {title: "User", data: "stripcardId.user.email"},
+                    {title: "Amount", data: "quantity"},
+                    {title: "date Created", data: "dateCreated.date", defaultContent: ""},
+                    {title: "date Paid", data: "datePaid.date", defaultContent: ""},
+                    {title: "status", data: "status.status"},
+                    {title: "Price", data: "amount"},
+                    {title: "discount", data: "discount"}
+                ]
+            });
+
+            let getUsers = function () {
+                let url = baseUrl + "user";
+                let auth = 'Bearer ' + sessionStorage.getItem("accessToken");
+
+                fetch(url, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': auth,
+                        'Content-type': 'application/json'
+                    },
+                }).then(response => response.json())
+                    .then(data => {
+                        sessionStorage.setItem("accessToken", data.access_token);
+                        updateUser(data);
+                    })
+                    .catch(error => console.log(error));
+            }
+
+            let updateTable = function (data) {
+                const responseData = Array.from(data.data);
+                paymentTable.clear();
+                paymentTable.rows.add(responseData);
+                paymentTable.draw();
+            }
+
+            let updatePayment = function (data) {
+                $("#paymentDropdown").empty();
+                const responseData = Array.from(data.data);
+                $.each(responseData, function (key, value) {
+                    console.log(value);
+                    $("#paymentDropdown")
+                        .append($("<option></option>")
+                            .attr("value", value.id)
+                            .text(value.id + " - " + value.stripcardId.user.email));
+                });
+            }
+            let updateUser = function (data) {
+                $("#userDropdown").empty();
+                $.each(data.data, function (key, value) {
+                    console.log(value);
+                    $("#userDropdown")
+                        .append($("<option></option>")
+                            .attr("value", value.id)
+                            .text(value.email));
+                });
+            }
+        });
+    </script>
+{% endblock %}

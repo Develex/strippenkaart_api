@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
 /**
- * @ORM\Entity(repositoryClass=StrippenRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\StripcardRepository::class)
  */
 class Stripcard implements JsonSerializable
 {
@@ -15,52 +17,57 @@ class Stripcard implements JsonSerializable
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private
-        $id;
+    private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, inversedBy="stripcard", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private
-        $user;
+    private $user;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private
-        $amount;
+    private $strips;
 
-    public
-    function getId(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="stripcardId")
+     */
+    private $payments;
+
+    public function __construct()
+    {
+//        parent::__construct();
+        $this->payments = new ArrayCollection();
+
+        $this->strips = 0;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public
-    function getUser(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public
-    function setUser(User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public
-    function getAmount(): ?int
+    public function getStrips(): ?int
     {
-        return $this->amount;
+        return $this->strips;
     }
 
-    public
-    function setAmount(int $amount): self
+    public function setStrips(int $strips): self
     {
-        $this->amount = $amount;
+        $this->strips = $strips;
 
         return $this;
     }
@@ -68,13 +75,42 @@ class Stripcard implements JsonSerializable
     /**
      * @inheritDoc
      */
-    public
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return [
             "id" => $this->id,
             "user" => $this->user,
-            "amount" => $this->amount
+            "strips" => $this->strips
         ];
+    }
+
+    /**
+     * @return Collection|Payment[]
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): self
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments[] = $payment;
+            $payment->setStripcardId($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): self
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getStripcardId() === $this) {
+                $payment->setStripcardId(null);
+            }
+        }
+
+        return $this;
     }
 }
