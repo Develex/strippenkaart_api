@@ -82,7 +82,7 @@ class StripcardController extends BaseController
 
         $stripcard = new Stripcard();
         $stripcard->setUser($this->userRepository->find($data->user));
-        $stripcard->setAmount(isset($data->amount) ? $data->amount : 0);
+        $stripcard->setStrips(isset($data->amount) ? $data->amount : 0);
         $this->em->persist($stripcard);
         $this->em->flush();
 
@@ -103,7 +103,7 @@ class StripcardController extends BaseController
     public function getStripcard(int $id = 0)
     {
         if ($id == 0) {
-            $stripcard = $this->getDoctrine()->getRepository("App:Stripcard")->findAll();
+            $stripcard = $this->repository->findAll();
         } else if (!$this->userRepository->find($id)) {
             return $this->sendError(400, "User not found");
         } else {

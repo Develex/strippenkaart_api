@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=App\Repository\HistoryRepository::class)
  */
-class History
+class History implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -89,5 +89,16 @@ class History
         $this->entity = $entity;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->id,
+            "recordNumber" => $this->recordNumber,
+            "dateChanged" => $this->dateChanged,
+            "changedBy" => $this->ChangedBy,
+            "tableName" => $this->entity
+        ];
     }
 }

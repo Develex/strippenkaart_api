@@ -37,7 +37,6 @@ class Stripcard implements JsonSerializable
 
     public function __construct()
     {
-//        parent::__construct();
         $this->payments = new ArrayCollection();
 
         $this->strips = 0;
