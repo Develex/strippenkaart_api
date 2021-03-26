@@ -100,8 +100,8 @@ class UserController extends BaseController
         $this->em->persist($user);
         $this->em->flush();
 
-        $response = $this->serializer->serialize($user, "json");
-        return $this->sendResponse(201, $response);
+//        $response = $this->serializer->serialize($user, "json");
+        return $this->sendResponse(201, $user);
     }
 
     /**

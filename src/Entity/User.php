@@ -78,7 +78,7 @@ class User implements UserInterface, JsonSerializableAlias
     /**
      * @ORM\OneToOne(targetEntity=Stripcard::class, mappedBy="user", cascade={"persist", "remove"})
      */
-    private $strippen;
+    private $stripcard;
 
     /**
      * @ORM\OneToMany(targetEntity=History::class, mappedBy="ChangedBy")
@@ -320,16 +320,16 @@ class User implements UserInterface, JsonSerializableAlias
 
     public function getStrippen(): ?Stripcard
     {
-        return $this->strippen;
+        return $this->stripcard;
     }
 
-    public function setStrippen(Stripcard $strippen): self
+    public function setStrippen(Stripcard $stripcard): self
     {
-        $this->strippen = $strippen;
+        $this->stripcard = $stripcard;
 
         // set the owning side of the relation if necessary
-        if ($strippen->getUser() !== $this) {
-            $strippen->setUser($this);
+        if ($stripcard->getUser() !== $this) {
+            $stripcard->setUser($this);
         }
 
         return $this;

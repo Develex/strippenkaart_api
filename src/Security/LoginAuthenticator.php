@@ -123,7 +123,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
 
         $user = $token->getUser();
         $user->setAccessToken($accessToken);
-        $user->setExpiresAt(new DateTime('+5min'));
+        $user->setExpiresAt(new DateTime('+10min'));
         $user->setExpires(true);
         $this->em->flush();
 

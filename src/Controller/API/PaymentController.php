@@ -97,7 +97,7 @@ class PaymentController extends BaseController
     public function newPayment(Request $request)
     {
         $data = json_decode($request->getContent());
-        if ((!isset($data->userId)) && (!isset($data->quantity)) && (!isset($data->amount)) && (!isset($data->discount))) {
+        if ((!isset($data->userId)) && (!isset($data->quantity)) && (!isset($data->amount)) && (!isset($data->discount)) && (!isset($data->paid))) {
             return $this->sendError(400, "Missing required parameters");
         }
 
@@ -108,7 +108,7 @@ class PaymentController extends BaseController
         $payment->setDiscount((int)$data->discount);
         $payment->setQuantity((int)$data->quantity);
         $payment->setDateCreated(new DateTime('now'));
-        if ($data->paid == true) {
+        if (isset($data->paid) && $data->paid == true) {
             $payment->setDatePaid(new DateTime('now'));
             $payment->setStatus($this->getDoctrine()->getRepository(Status::class)->find(2)); //PAID
         } else {

@@ -67,7 +67,7 @@ class HistoryController extends BaseController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function getStripcard(int $id = 0)
+    public function getHistory(int $id = 0)
     {
         if ($id == 0) {
             $history = $this->repository->findAll();
