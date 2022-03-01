@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <style>
+    </style>
+
+    <section class="hero is is-fullheight-with-navbar is-fullwidth">
+        <div class="hero-head">
+        </div>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <p class="title is-size-1">
+                    Welkom!
+                </p>
+                <p class="subtitle">
+                {% if user is not defined %}
+                    <p class="subtitle">Log in om de applicatie te kunnen gebruiken.</p>
+                <button class="button is-primary login">Log in</button>
+                {% else %}
+                    <p class="subtitle">Huidige ingelogd: {{ user.email }}</p>
+                    <button class="button is-primary logout">Log uit</button>
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

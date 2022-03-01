@@ -1,0 +1,6 @@
+{
+  "build/app.js": "/build/app.js",
+  "build/Bulma.css": "/build/Bulma.css",
+  "build/style.css": "/build/style.css",
+  "build/runtime.js": "/build/runtime.js"
+}

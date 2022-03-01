@@ -129,6 +129,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
 
         $msg = [
             "message" => "Login Successful",
+            "id" => $user->getId(),
             "access_token" => $accessToken
         ];
         return new Response(json_encode($msg), Response::HTTP_CREATED);
