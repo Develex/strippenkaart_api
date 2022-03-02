@@ -25,22 +25,25 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item">Home</a>
-            <a class="navbar-item">QR-code</a>
-            <a class="navbar-item">About</a>
-            <a class="navbar-item">Jobs</a>
-            <a class="navbar-item">Contact</a>
-            <hr class="navbar-divider">
-            <a class="navbar-item">Report an issue </a>
+            <a class="navbar-item is-size-1-touch" href="{{ path('dashboard') }}">Home</a>
+            <a class="navbar-item is-size-1-touch" href="{{ path('strippenkaart') }}">Mijn Strippenkaart</a>
+            <a class="navbar-item is-size-1-touch" href="{{ path('scan') }}">Verwerk strippenkaart</a>
+            <a class="navbar-item is-size-1-touch">Jobs</a>
         </div>
 
         <div class="navbar-end">
             <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary register">
+                <div class="buttons is-centered">
+                    {% if user is not defined or user is null %}
+                    <a class="button is-primary register is-size-3-touch">
                         <strong>Registreer</strong>
                     </a>
-                    <a class="button is-light login">Log in</a>
+                    <a class="button is-light login is-size-3-touch">Log in</a>
+                    {% else %}
+                    <a class="button is-warning logout">
+                        <strong>Log uit</strong>
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -103,6 +106,7 @@
         crossorigin="anonymous"></script>
 <script rel="script" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://kingkode.com/datatables.editor.lite/js/altEditor/dataTables.altEditor.free.js"></script>
+{{ encore_entry_script_tags("qrcodegen") }}
 
 <script>
     $(document).ready(function () {
