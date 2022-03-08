@@ -28,7 +28,7 @@
             <a class="navbar-item is-size-1-touch" href="{{ path('dashboard') }}">Home</a>
             <a class="navbar-item is-size-1-touch" href="{{ path('strippenkaart') }}">Mijn Strippenkaart</a>
             <a class="navbar-item is-size-1-touch" href="{{ path('scan') }}">Verwerk strippenkaart</a>
-            <a class="navbar-item is-size-1-touch">Jobs</a>
+            <a class="navbar-item is-size-1-touch" href="{{ path('admin') }}">Administratie</a>
         </div>
 
         <div class="navbar-end">
@@ -56,17 +56,17 @@
 <div class="modal" id="login-modal">
     <div class="modal-background"></div>
     <div class="modal-content">
-        <form class="box">
+        <form class="box" id="login-form">
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
-                    <input class="input is-link" type="email" placeholder="">
+                    <input class="input is-link" name="email" type="email" placeholder="">
                 </div>
             </div>
             <div class="field">
                 <label class="label">Wachtwoord</label>
                 <div class="control">
-                    <input class="input is-link" type="password" placeholder="********">
+                    <input class="input is-link"name="password" type="password" placeholder="********">
                 </div>
             </div>
             <button class="button" type="submit">Log in</button>
@@ -77,23 +77,23 @@
 <div class="modal" id="register-modal">
     <div class="modal-background"></div>
     <div class="modal-content">
-        <form class="box">
+        <form class="box" id="register-form">
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
-                    <input class="input is-link" type="email" placeholder="">
+                    <input class="input is-link" name="email" type="email" placeholder="">
                 </div>
             </div>
             <div class="field">
                 <label class="label">Wachtwoord</label>
                 <div class="control">
-                    <input class="input is-link" type="password" placeholder="********">
+                    <input class="input is-link" name="password" type="password" placeholder="********">
                 </div>
             </div>
             <div class="field">
                 <label class="label">Herhaal wachtwoord</label>
                 <div class="control">
-                    <input class="input is-link" type="password" placeholder="********">
+                    <input class="input is-link" name="password" type="password" placeholder="********">
                 </div>
             </div>
             <button class="button" type="submit">Registreer</button>
@@ -106,26 +106,10 @@
         crossorigin="anonymous"></script>
 <script rel="script" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://kingkode.com/datatables.editor.lite/js/altEditor/dataTables.altEditor.free.js"></script>
-{{ encore_entry_script_tags("qrcodegen") }}
+{{ encore_entry_script_tags("qrcodejs") }}
+{{ encore_entry_script_tags("js-cookie") }}
+{{ encore_entry_script_tags("app") }}
 
-<script>
-    $(document).ready(function () {
-        $(".navbar-burger").click(function () {
-            $(".navbar-burger").toggleClass("is-active");
-            $(".navbar-menu").toggleClass("is-active");
-        });
-
-        $("#login-modal .modal-close, .login,#login-modal .modal-background").click(function () {
-            $("#login-modal").toggleClass("is-active");
-        });
-
-        $("#register-modal .modal-close, .register,#register-modal .modal-background").click(function () {
-            $("#register-modal").toggleClass("is-active");
-        });
-
-
-    });
-</script>
-{% block javascripts %}{% endblock %}
+{% block javascript %}{% endblock %}
 </body>
 </html>

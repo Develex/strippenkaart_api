@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "bulma": "^0.9.3"
+    "bulma": "^0.9.3",
+    "js-cookie": "^3.0.1",
+    "qrcodejs": "^1.0.0"
   },
   "devDependencies": {
     "@symfony/webpack-encore": "^1.8.1",

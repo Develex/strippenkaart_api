@@ -1,4 +1,4 @@
-var Encore = require('@symfony/webpack-encore');
+const Encore = require('@symfony/webpack-encore');
 
 Encore
     // directory where compiled assets will be stored
@@ -18,7 +18,8 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-    .addEntry('qrcodegen', './assets/js/qrcodegen-v1.7.0-es6.js')
+    .addEntry('qrcodejs', './node_modules/qrcodejs/qrcode.min.js')
+    .addEntry('js-cookie', './node_modules/js-cookie/dist/js.cookie.mjs')
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
@@ -44,4 +45,7 @@ Encore
 //.autoProvidejQuery()
 ;
 
+module.exports = {
+
+}
 module.exports = Encore.getWebpackConfig();

@@ -6,10 +6,16 @@
         "/build/app.js"
       ]
     },
-    "qrcodegen": {
+    "qrcodejs": {
       "js": [
         "/build/runtime.js",
-        "/build/qrcodegen.js"
+        "/build/qrcodejs.js"
+      ]
+    },
+    "js-cookie": {
+      "js": [
+        "/build/runtime.js",
+        "/build/js-cookie.js"
       ]
     },
     "Bulma": {
