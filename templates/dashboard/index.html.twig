@@ -15,13 +15,14 @@
                     Welkom!
                 </p>
                 <p class="subtitle">
-                {% if user is not defined %}
+                <div class="logged-out-container">
                     <p class="subtitle">Log in om de applicatie te kunnen gebruiken.</p>
-                <button class="button is-primary login">Log in</button>
-                {% else %}
-                    <p class="subtitle">Huidige ingelogd: {{ user.email }}</p>
+                    <button class="button is-primary login">Log in</button>
+                </div>
+                <div class="logged-in-container">
+                    <p class="subtitle">Huidige ingelogd:</p>
                     <button class="button is-primary logout">Log uit</button>
-                {% endif %}
+                </div>
 
             </div>
         </div>

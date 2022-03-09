@@ -34,16 +34,17 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons is-centered">
-                    {% if user is not defined or user is null %}
+                    <div class="logged-out-container">
                     <a class="button is-primary register is-size-3-touch">
                         <strong>Registreer</strong>
                     </a>
                     <a class="button is-light login is-size-3-touch">Log in</a>
-                    {% else %}
-                    <a class="button is-warning logout">
-                        <strong>Log uit</strong>
-                    </a>
-                    {% endif %}
+                    </div>
+                    <div class="logged-in-container">
+                        <a class="button is-warning logout">
+                            <strong>Log uit</strong>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,6 +72,10 @@
             </div>
             <button class="button" type="submit">Log in</button>
         </form>
+        <div class="notification is-danger is-light">
+            <button class="delete is-primary is-rounded">x</button>
+            <p>Er is iets mis gegaan. Probeer het later opnieuw.</p>
+        </div>
     </div>
     <button class="modal-close is-large" aria-label="close">x</button>
 </div>
