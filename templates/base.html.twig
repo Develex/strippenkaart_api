@@ -72,8 +72,7 @@
             </div>
             <button class="button" type="submit">Log in</button>
         </form>
-        <div class="notification is-danger is-light">
-            <button class="delete is-primary is-rounded">x</button>
+        <div id="login-failed" class="notification is-danger is-light" style="display: none;">
             <p>Er is iets mis gegaan. Probeer het later opnieuw.</p>
         </div>
     </div>
@@ -111,8 +110,6 @@
         crossorigin="anonymous"></script>
 <script rel="script" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://kingkode.com/datatables.editor.lite/js/altEditor/dataTables.altEditor.free.js"></script>
-{{ encore_entry_script_tags("qrcodejs") }}
-{{ encore_entry_script_tags("js-cookie") }}
 {{ encore_entry_script_tags("app") }}
 
 {% block javascript %}{% endblock %}

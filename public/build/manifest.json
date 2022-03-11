@@ -1,6 +1,6 @@
 {
   "build/app.js": "/build/app.js",
-  "build/qrcodejs.js": "/build/qrcodejs.js",
+  "build/qr.js": "/build/qr.js",
   "build/js-cookie.js": "/build/js-cookie.js",
   "build/Bulma.css": "/build/Bulma.css",
   "build/style.css": "/build/style.css",

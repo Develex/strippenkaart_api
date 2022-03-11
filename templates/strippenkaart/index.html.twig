@@ -3,50 +3,31 @@
 {% block title %}Mijn Strippenkaart{% endblock %}
 
 {% block body %}
-    {% if user is not defined or user is null %}
-        {% set user = 'collin.franckena001@fclive.nl' %}
-    {% endif %}
-    {% if strippen is not defined or user is null %}
-        {% set strippen = '48' %}
-        {% set gebruiktestrippen = '23' %}
-    {% endif %}
 
     <div class="columns is-desktop">
+        <div class="column is-2-desktop"></div>
         <div class="column is-5-desktop">
             <section class="hero">
                 <div class="hero-body has-text-centered text">
                     <h1 class="title is-size-1-touch">Mijn Strippenkaart</h1>
                     <br/>
-                    <p class="subtitle is-size-3-touch"><strong>Eigenaar Strippenkaart:</strong> <br/> {{ user }} </p>
-                    <p class="subtitle is-size-3-touch"><strong>Aantal beschikbare strippen:</strong> <br/> {{ strippen }}</p>
-                    <p class="subtitle is-size-3-touch"><strong>Totaal gebruikte strippen:</strong> <br/> {{ gebruiktestrippen }}</p>
+                    <p class="subtitle is-size-3-touch"><strong>Eigenaar Strippenkaart:</strong> <br/> <i id="user-email">placeholder@test.com</i></p>
+                    <p class="subtitle is-size-3-touch"><strong>Aantal beschikbare strippen:</strong> <br/><i id="user-strippen"></i></p>
+                    <p class="subtitle is-size-3-touch"><strong>Totaal gebruikte strippen:</strong> <br/><i id="user-used-strippen"></i></p>
                 </div>
             </section>
         </div>
-        <div class="column is-7-desktop">
-            <figure class="image is-128x128 is-flex is-justify-content-center">
-                <img id="qr-code" src="{{ asset("./images/QR-code.png") }}" height="400" width="400" type="image/svg+xml"/>
+        <div class="column is-3-desktop">
+            <figure class="image is-128x128 is-flex is-justify-content-center pt-5">
+                <div id="qr-code"></div>
+{#                <img id="qr-code" src="{{ asset("./images/QR-code.png") }}" height="400" width="400" type="image/svg+xml"/>#}
             </figure>
         </div>
-        <div class="qrcode"></div>
+            <div class="desktop is-2-desktop"></div>
     </div>
 {% endblock %}
 
 {% block javascript %}
 {{ parent() }}
-
-<script>
-    $(document).ready(function () {
-        const qrcode = new QRCode("qrcode", {
-            text: "1",
-            width: 128,
-            height: 128,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.correctLevel.H
-        });
-
-
-    });
-</script>
+{{ encore_entry_script_tags("qr") }}
 {% endblock %}

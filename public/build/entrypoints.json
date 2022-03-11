@@ -6,10 +6,10 @@
         "/build/app.js"
       ]
     },
-    "qrcodejs": {
+    "qr": {
       "js": [
         "/build/runtime.js",
-        "/build/qrcodejs.js"
+        "/build/qr.js"
       ]
     },
     "js-cookie": {
