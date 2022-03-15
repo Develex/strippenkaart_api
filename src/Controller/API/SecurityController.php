@@ -153,7 +153,7 @@ class SecurityController extends BaseController
             $user->setVerified(true);
             $user->setActive(true);
             $this->em->flush();
-            dd($user);
+            return $this->render('landing/index.html.twig');
         }
     }
 

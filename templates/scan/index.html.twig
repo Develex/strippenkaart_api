@@ -28,5 +28,28 @@
             </div>
         </div>
         <div class="column is-one-fifth-desktop"></div>
+
+        <div id="findUser" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <div class="modal-card-head">
+
+                </div>
+                <div class="modal-card-body">
+
+                </div>
+                <div class="modal-card-foot">
+                    <div class="buttons">
+                        <div class="button is-success">zoek</div>
+                        <div class="button is-warning">annuleren</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+{{ encore_entry_script_tags("scan") }}
 {% endblock %}

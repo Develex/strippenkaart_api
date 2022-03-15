@@ -8,9 +8,12 @@ $(document).ready(function () {
     //check if access_token exists
     if (window.localStorage.getItem("access_token") != null) {
         $(".logged-out-container").hide();
+        updateMenu();
     } else {
         $('.logged-in-container').hide();
-        $("#burgerButton").toggle();
+        $("#burgerButton").hide();
+        $(".navbar-start").hide();
+        $(".navbar-end").hide();
     }
 
     //toggle for burger menu
@@ -100,10 +103,37 @@ $(document).ready(function () {
         logout()
     });
 
+    function updateMenu() {
+        switch (JSON.parse(window.localStorage.getItem("user"))["roles"][0]) {
+            case "ROLE_USER":
+                $(".role-user").show();
+                $(".role-stamper").hide();
+                $(".role-penningmeester").hide();
+                break;
+            case "ROLE_STAMPER":
+                $(".role-user").show();
+                $(".role-stamper").show();
+                $(".role-penningmeester").hide();
+                break;
+            case "ROLE_PENNINGMEESTER":
+                $(".role-user").show();
+                $(".role-stamper").show();
+                $(".role-penningmeester").show();
+                break;
+            default:
+                $(".role-user").hide();
+                $(".role-stamper").hide();
+                $(".role-penningmeester").hide();
+                break;
+        }
+    }
+
     function toggleButtons(){
         $(".logged-out-container").toggle();
         $(".logged-in-container").toggle();
-        $("#burgerButton").toggle();
+        ($(".navbar-start").css("display") == 'none') ? ($(".navbar-start").show()) : ($(".navbar-start").hide());
+        ($(".navbar-end").css("display") == 'none') ? $(".navbar-end").show() : $(".navbar-end").hide();
+        ($("#burgerButton").css("display") == 'none') ? $("#burgerButton").show() : $("#burgerButton").hide();
     }
 
     function logout() {
@@ -129,6 +159,7 @@ $(document).ready(function () {
                 response.json().then(result => {
                     window.localStorage.setItem("access_token", result["access_token"]);
                     window.localStorage.setItem("user", JSON.stringify(result["data"][0]));
+                    updateMenu();
                 })
             }
         }).catch(error => {

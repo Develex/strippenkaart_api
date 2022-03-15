@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LandingController!{% endblock %}
+
+{% block body %}
+    <div class="hero is-fullheight-with-navbar is-fullwidth">
+        <div class="hero-head">
+
+        </div>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <p class="title is-size-1">
+                    Verificatie gelukt!
+                </p>
+                <p class="subtitle">
+                    Klik <a class="is-primary" href="{{ path('dashboard') }}">Hier</a> om in te loggen.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

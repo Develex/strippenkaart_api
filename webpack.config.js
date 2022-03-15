@@ -17,8 +17,9 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.css)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/js/app.js')
-    .addEntry('qr', './assets/js/qr.js')
+    .addEntry('app', './assets/js/app.js')      //main
+    .addEntry('qr', './assets/js/qr.js')        //Mijn Strippenkaart
+    .addEntry('scan', './assets/js/scan.js')    //Verwerk Strippenkaart
     .addEntry('js-cookie', './node_modules/js-cookie/dist/js.cookie.mjs')
 
     //.addEntry('page1', './assets/js/page1.js')

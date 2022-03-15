@@ -16,7 +16,8 @@
     <div class="navbar-brand">
         <img src="{{ asset("./images/logo-trans.png") }}" width="160">
 
-        <a id="burgerButton" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <a id="burgerButton" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -25,20 +26,20 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item is-size-1-touch" href="{{ path('dashboard') }}">Home</a>
-            <a class="navbar-item is-size-1-touch" href="{{ path('strippenkaart') }}">Mijn Strippenkaart</a>
-            <a class="navbar-item is-size-1-touch" href="{{ path('scan') }}">Verwerk strippenkaart</a>
-            <a class="navbar-item is-size-1-touch" href="{{ path('admin') }}">Administratie</a>
+            <a class="navbar-item is-size-3-touch has-text-centered-touch role-user" href="{{ path('dashboard') }}">Home</a>
+            <a class="navbar-item is-size-3-touch has-text-centered-touch role-user" href="{{ path('strippenkaart') }}">Mijn Strippenkaart</a>
+            <a class="navbar-item is-size-3-touch has-text-centered-touch role-stamper" href="{{ path('scan') }}">Verwerk strippenkaart</a>
+            <a class="navbar-item is-size-3-touch has-text-centered-touch role-penningmeester" href="{{ path('admin') }}">Administratie</a>
         </div>
 
         <div class="navbar-end">
             <div class="navbar-item">
                 <div class="buttons is-centered">
                     <div class="logged-out-container">
-                    <a class="button is-primary register is-size-5-touch">
-                        <strong>Registreer</strong>
-                    </a>
-                    <a class="button is-light login is-size-5-touch">Log in</a>
+                        <a class="button is-primary register is-size-5-touch">
+                            <strong>Registreer</strong>
+                        </a>
+                        <a class="button is-light login is-size-5-touch">Log in</a>
                     </div>
                     <div class="logged-in-container">
                         <a class="button is-warning logout">
@@ -67,7 +68,7 @@
             <div class="field">
                 <label class="label">Wachtwoord</label>
                 <div class="control">
-                    <input class="input is-link"name="password" type="password" placeholder="********">
+                    <input class="input is-link" name="password" type="password" placeholder="********">
                 </div>
             </div>
             <button class="button" type="submit">Log in</button>
@@ -91,13 +92,15 @@
             <div class="field">
                 <label class="label">Wachtwoord</label>
                 <div class="control">
-                    <input id="registerPassword" class="input is-link" name="password" type="password" placeholder="********">
+                    <input id="registerPassword" class="input is-link" name="password" type="password"
+                           placeholder="********">
                 </div>
             </div>
             <div class="field">
                 <label class="label">Herhaal wachtwoord</label>
                 <div class="control">
-                    <input id="registerRepeatPassword" class="input is-link" name="repeatPassword" type="password" placeholder="********">
+                    <input id="registerRepeatPassword" class="input is-link" name="repeatPassword" type="password"
+                           placeholder="********">
                 </div>
             </div>
             <button class="button" type="submit">Registreer</button>

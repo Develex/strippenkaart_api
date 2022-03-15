@@ -12,6 +12,12 @@
         "/build/qr.js"
       ]
     },
+    "scan": {
+      "js": [
+        "/build/runtime.js",
+        "/build/scan.js"
+      ]
+    },
     "js-cookie": {
       "js": [
         "/build/runtime.js",
