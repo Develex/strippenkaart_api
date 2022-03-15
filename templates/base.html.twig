@@ -16,7 +16,7 @@
     <div class="navbar-brand">
         <img src="{{ asset("./images/logo-trans.png") }}" width="160">
 
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <a id="burgerButton" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -35,10 +35,10 @@
             <div class="navbar-item">
                 <div class="buttons is-centered">
                     <div class="logged-out-container">
-                    <a class="button is-primary register is-size-3-touch">
+                    <a class="button is-primary register is-size-5-touch">
                         <strong>Registreer</strong>
                     </a>
-                    <a class="button is-light login is-size-3-touch">Log in</a>
+                    <a class="button is-light login is-size-5-touch">Log in</a>
                     </div>
                     <div class="logged-in-container">
                         <a class="button is-warning logout">
@@ -85,23 +85,26 @@
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
-                    <input class="input is-link" name="email" type="email" placeholder="">
+                    <input id="registerEmail" class="input is-link" name="email" type="email" placeholder="">
                 </div>
             </div>
             <div class="field">
                 <label class="label">Wachtwoord</label>
                 <div class="control">
-                    <input class="input is-link" name="password" type="password" placeholder="********">
+                    <input id="registerPassword" class="input is-link" name="password" type="password" placeholder="********">
                 </div>
             </div>
             <div class="field">
                 <label class="label">Herhaal wachtwoord</label>
                 <div class="control">
-                    <input class="input is-link" name="password" type="password" placeholder="********">
+                    <input id="registerRepeatPassword" class="input is-link" name="repeatPassword" type="password" placeholder="********">
                 </div>
             </div>
             <button class="button" type="submit">Registreer</button>
         </form>
+        <div id="register-failed" class="notification is-danger is-light" style="display: none;">
+            <p>Er is iets mis gegaan. Probeer het later opnieuw.</p>
+        </div>
     </div>
     <button class="modal-close is-large" aria-label="close">x</button>
 </div>

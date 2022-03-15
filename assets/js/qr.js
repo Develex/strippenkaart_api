@@ -15,7 +15,7 @@ $(document).ready(function (e) {
         size: 128
     }, document.querySelector('#qr-code'));
 
-    $("#user-email").text(JSON.parse(window.localStorage.getItem("user"))["email"]);
+    // $("#user-email").text(JSON.parse(window.localStorage.getItem("user"))["email"]);
     console.log(JSON.parse(window.localStorage.getItem("user")));
 
     getStrippenkaart(window.localStorage.getItem("id"));
@@ -32,6 +32,9 @@ $(document).ready(function (e) {
                     logout();
                 } else {
                     response.json().then(result => {
+                        console.log(result);
+                        $("#user-strippen").text(result["data"]["strips"]);
+                        $("#user-email").text(result["data"]["user"]["email"]);
                         window.localStorage.setItem("access_token", result["access_token"]);
                     })
                 }

@@ -84,7 +84,7 @@ class BaseController extends AbstractController
     public function sendMail($email, $data, \Swift_Mailer $swiftMailer)
     {
         $message = (new Swift_Message("Verfication Email"))
-            ->setFrom('mailer@collinfranckena.com')
+            ->setFrom('no-reply@collinfranckena.nl')
             ->setTo($email)
             ->setBody(
                 $this->renderView(

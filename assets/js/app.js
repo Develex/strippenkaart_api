@@ -10,6 +10,7 @@ $(document).ready(function () {
         $(".logged-out-container").hide();
     } else {
         $('.logged-in-container').hide();
+        $("#burgerButton").toggle();
     }
 
     //toggle for burger menu
@@ -37,7 +38,11 @@ $(document).ready(function () {
         })
             .then(response => {
                 if (!response.ok) {
-                    $("#login-failed").show();
+                    response.json().then(result => {
+                        console.log(result);
+                        $("#login-failed > p").text(result["message"]);
+                        $("#login-failed").show();
+                    });
                 } else {
                     response.json().then(result => {
                         //saves access_token in localstorage
@@ -57,6 +62,40 @@ $(document).ready(function () {
             })
     });
 
+    $("#register-form").submit(function (e) {
+        e.preventDefault();
+        console.log($("#registerPassword").val() + ":" + $("#registerRepeatPassword").val())
+        if ($("#registerPassword").val() === $("#registerRepeatPassword").val()) {
+            fetch(baseURL + apiBaseURL + 'auth/register', {
+                method: 'POST',
+                body: JSON.stringify({email: $("#registerEmail").val(), password: $("#registerPassword").val()})
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        response.json().then(result => {
+                            console.log(result);
+                            $("#register-failed > p").text(result["message"]);
+                            $("#register-failed").show();
+                        });
+                    } else {
+                        response.json().then(result => {
+                            console.log(result);
+                            //closes login modal
+                            $("#register-modal").toggleClass("is-active");
+                            $("#register-failed").hide()
+                        });
+                    }
+                }).catch((error) => {
+                console.log("Error: " + error);
+            })
+        } else {
+            //passwords not matching.
+            console.log("passwords not matching")
+            $("#register-failed > p").text("Wachtwoorden komen niet overeen.");
+            $("#register-failed").show();
+        }
+    });
+
     $('.logout').on("click", function() {
         logout()
     });
@@ -64,6 +103,7 @@ $(document).ready(function () {
     function toggleButtons(){
         $(".logged-out-container").toggle();
         $(".logged-in-container").toggle();
+        $("#burgerButton").toggle();
     }
 
     function logout() {
