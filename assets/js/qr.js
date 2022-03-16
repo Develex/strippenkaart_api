@@ -2,7 +2,7 @@ import QrCreator from "qr-creator";
 
 $(document).ready(function (e) {
 
-    const baseURL = "http://127.0.0.1:8000";
+    const baseURL = window.localStorage.getItem("address");
     const apiBaseURL = "/api/v1/";
 
     //generate Qr-code

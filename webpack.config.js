@@ -20,12 +20,15 @@ Encore
     .addEntry('app', './assets/js/app.js')      //main
     .addEntry('qr', './assets/js/qr.js')        //Mijn Strippenkaart
     .addEntry('scan', './assets/js/scan.js')    //Verwerk Strippenkaart
-    .addEntry('js-cookie', './node_modules/js-cookie/dist/js.cookie.mjs')
+
+    .addEntry("select2js", './node_modules/select2/dist/js/select2.js')
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
     .addStyleEntry('Bulma', './assets/css/Sass-SCSS/bulmaStyles.scss')
     .addStyleEntry("style", './assets/css/app.css')
+
+    .addStyleEntry("select2css", './node_modules/select2/dist/css/select2.css')
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app

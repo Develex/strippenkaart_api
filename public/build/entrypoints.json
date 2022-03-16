@@ -18,10 +18,10 @@
         "/build/scan.js"
       ]
     },
-    "js-cookie": {
+    "select2js": {
       "js": [
         "/build/runtime.js",
-        "/build/js-cookie.js"
+        "/build/select2js.js"
       ]
     },
     "Bulma": {
@@ -38,6 +38,14 @@
       ],
       "css": [
         "/build/style.css"
+      ]
+    },
+    "select2css": {
+      "js": [
+        "/build/runtime.js"
+      ],
+      "css": [
+        "/build/select2css.css"
       ]
     }
   }

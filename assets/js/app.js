@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 $(document).ready(function () {
 
-    const baseURL = "http://127.0.0.1:8000";
+    const baseURL = window.localStorage.getItem("address");
     const apiBaseURL = "/api/v1/";
 
     //check if access_token exists

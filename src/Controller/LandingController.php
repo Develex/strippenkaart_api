@@ -15,6 +15,7 @@ class LandingController extends AbstractController
     {
         return $this->render('landing/index.html.twig', [
             'controller_name' => 'LandingController',
+            'SERVER_ADDRESS' => $_ENV["SERVER_ADDRESS"],
         ]);
     }
 }

@@ -2,8 +2,9 @@
   "build/app.js": "/build/app.js",
   "build/qr.js": "/build/qr.js",
   "build/scan.js": "/build/scan.js",
-  "build/js-cookie.js": "/build/js-cookie.js",
+  "build/select2js.js": "/build/select2js.js",
   "build/Bulma.css": "/build/Bulma.css",
   "build/style.css": "/build/style.css",
+  "build/select2css.css": "/build/select2css.css",
   "build/runtime.js": "/build/runtime.js"
 }

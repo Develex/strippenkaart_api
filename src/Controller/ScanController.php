@@ -15,6 +15,7 @@ class ScanController extends AbstractController
     {
         return $this->render('scan/index.html.twig', [
             'controller_name' => 'ScanController',
+            'SERVER_ADDRESS' => $_ENV["SERVER_ADDRESS"],
         ]);
     }
 }

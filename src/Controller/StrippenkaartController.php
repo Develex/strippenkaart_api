@@ -15,6 +15,7 @@ class StrippenkaartController extends AbstractController
     {
         return $this->render('strippenkaart/index.html.twig', [
             'controller_name' => 'StrippenkaartController',
+            'SERVER_ADDRESS' => $_ENV["SERVER_ADDRESS"],
         ]);
     }
 }

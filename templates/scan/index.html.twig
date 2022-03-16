@@ -5,15 +5,15 @@
 {% block body %}
 
     <div class="columns is-desktop">
-        <div class="column is-one-fifth-desktop"></div>
-        <div class="column is-three-fifths-desktop">
+        <div class="column is-one-fifth-desktop is-0-touch"></div>
+        <div class="column is-three-fifths-desktop is-12-touch">
             <div class="box">
                 <p class="is-size-3 has-text-black">Zoek een gebruiker</p>
-            <form>
+            <form id="searchUserForm">
                 <div class="field">
                     <label class="label">Email</label>
                     <div class="control">
-                        <input class="input is-primary" type="text">
+                        <select class="input" id="userEmailInput"></select>
                     </div>
                 </div>
                 <div class="field">
@@ -27,23 +27,40 @@
                 {# QR-scanner #}
             </div>
         </div>
-        <div class="column is-one-fifth-desktop"></div>
+        <div class="column is-one-fifth-desktop is-0-touch"></div>
 
         <div id="findUser" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <div class="modal-card-head">
-
+                    <p>Hoeveel strippen?</p>
                 </div>
+                <form>
                 <div class="modal-card-body">
-
+                        <div class="field">
+                            <div class="select">
+                                <select name="userAmount">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                        </div>
                 </div>
                 <div class="modal-card-foot">
                     <div class="buttons">
-                        <div class="button is-success">zoek</div>
-                        <div class="button is-warning">annuleren</div>
+                        <button type="submit" id="searchConfirm" class="button is-success">Bevestig</button>
+                        <div id="searchClose" class="button is-warning">Annuleren</div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -51,5 +68,6 @@
 
 {% block javascript %}
 {{ parent() }}
+{{ encore_entry_script_tags("select2js") }}
 {{ encore_entry_script_tags("scan") }}
 {% endblock %}

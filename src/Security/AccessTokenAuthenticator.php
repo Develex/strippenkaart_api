@@ -84,7 +84,7 @@ class AccessTokenAuthenticator extends AbstractGuardAuthenticator
                 return false;
             } else {
                 $user->setAccessToken($tokenGenerator->generate(20));
-                $user->setExpiresAt(new DateTime('+5min'));
+                $user->setExpiresAt(new DateTime('+30min'));
                 $this->em->flush();
             }
         }
