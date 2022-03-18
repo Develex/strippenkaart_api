@@ -2,11 +2,11 @@ import $ from 'jquery';
 
 $(document).ready(function () {
 
-    const baseURL = window.localStorage.getItem("address");
+    const baseURL = window.sessionStorage.getItem("address");
     const apiBaseURL = "/api/v1/";
 
     //check if access_token exists
-    if (window.localStorage.getItem("access_token") != null) {
+    if (window.sessionStorage.getItem("access_token") != null) {
         $(".logged-out-container").hide();
         updateMenu();
     } else {
@@ -48,13 +48,13 @@ $(document).ready(function () {
                     });
                 } else {
                     response.json().then(result => {
-                        //saves access_token in localstorage
-                        window.localStorage.setItem("access_token", result["access_token"]);
-                        window.localStorage.setItem("id", result["id"]);
+                        //saves access_token in sessionStorage
+                        window.sessionStorage.setItem("access_token", result["access_token"]);
+                        window.sessionStorage.setItem("id", result["id"]);
                         //swaps login and logout buttons
                         toggleButtons();
                         //update dashboard page
-                        getUser(window.localStorage.getItem("id"));
+                        getUser(window.sessionStorage.getItem("id"));
                         //closes login modal
                         $("#login-modal").toggleClass("is-active");
                         $("#login-failed").hide()
@@ -104,7 +104,7 @@ $(document).ready(function () {
     });
 
     function updateMenu() {
-        switch (JSON.parse(window.localStorage.getItem("user"))["roles"][0]) {
+        switch (JSON.parse(window.sessionStorage.getItem("user"))["roles"][0]) {
             case "ROLE_USER":
                 $(".role-user").show();
                 $(".role-stamper").hide();
@@ -137,9 +137,9 @@ $(document).ready(function () {
     }
 
     function logout() {
-        window.localStorage.removeItem("access_token");
-        window.localStorage.removeItem("id");
-        window.localStorage.removeItem("user");
+        window.sessionStorage.removeItem("access_token");
+        window.sessionStorage.removeItem("id");
+        window.sessionStorage.removeItem("user");
         toggleButtons();
         //go back to home page
         window.location.replace(baseURL + "/dashboard")
@@ -149,7 +149,7 @@ $(document).ready(function () {
         fetch(baseURL + apiBaseURL + "user/" + id, {
             method: 'GET',
             headers: {
-                authorization: "Bearer " + window.localStorage.getItem("access_token")
+                authorization: "Bearer " + window.sessionStorage.getItem("access_token")
             }
         }).then(response => {
             if (!response.ok) {
@@ -157,8 +157,8 @@ $(document).ready(function () {
                 logout();
             } else {
                 response.json().then(result => {
-                    window.localStorage.setItem("access_token", result["access_token"]);
-                    window.localStorage.setItem("user", JSON.stringify(result["data"][0]));
+                    window.sessionStorage.setItem("access_token", result["access_token"]);
+                    window.sessionStorage.setItem("user", JSON.stringify(result["data"][0]));
                     updateMenu();
                 })
             }

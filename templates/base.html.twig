@@ -123,7 +123,7 @@
 
 {% block javascript %}
 <script>
-    window.localStorage.setItem("address", "{{ SERVER_ADDRESS }}");
+    window.sessionStorage.setItem("address", "{{ SERVER_ADDRESS }}");
 </script>
 {% endblock %}
 </body>

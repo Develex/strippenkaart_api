@@ -21,11 +21,11 @@
                 </div>
             </form>
             </div>
-            <div class="box">
-                <p class="is-size-3 has-text-black">Scan een QR-code</p>
+{#            <div class="box">#}
+{#                <p class="is-size-3 has-text-black">Scan een QR-code</p>#}
 
-                {# QR-scanner #}
-            </div>
+{#                #}{# QR-scanner #}
+{#            </div>#}
         </div>
         <div class="column is-one-fifth-desktop is-0-touch"></div>
 
@@ -40,16 +40,16 @@
                         <div class="field">
                             <div class="select">
                                 <select name="userAmount">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
+                                    <option value="-1">1</option>
+                                    <option value="-2">2</option>
+                                    <option value="-3">3</option>
+                                    <option value="-4">4</option>
+                                    <option value="-5">5</option>
+                                    <option value="-6">6</option>
+                                    <option value="-7">7</option>
+                                    <option value="-8">8</option>
+                                    <option value="-9">9</option>
+                                    <option value="-10">10</option>
                                 </select>
                             </div>
                         </div>
@@ -61,6 +61,12 @@
                     </div>
                 </div>
                 </form>
+            </div>
+            <div id="errorMessage" class="notification is-danger is-light mt-3" style="display: none;">
+                <p></p>
+            </div>
+            <div id="successMessage" class="notification is-success is-light mt-3" style="display: none;">
+                <p></p>
             </div>
         </div>
     </div>

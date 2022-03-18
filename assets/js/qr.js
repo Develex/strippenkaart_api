@@ -2,12 +2,12 @@ import QrCreator from "qr-creator";
 
 $(document).ready(function (e) {
 
-    const baseURL = window.localStorage.getItem("address");
+    const baseURL = window.sessionStorage.getItem("address");
     const apiBaseURL = "/api/v1/";
 
     //generate Qr-code
     QrCreator.render({
-        text: window.localStorage.getItem("id"),
+        text: window.sessionStorage.getItem("id"),
         radius: 0,
         ecLevel: 'H',
         fill: '#000000',
@@ -15,16 +15,16 @@ $(document).ready(function (e) {
         size: 128
     }, document.querySelector('#qr-code'));
 
-    // $("#user-email").text(JSON.parse(window.localStorage.getItem("user"))["email"]);
-    console.log(JSON.parse(window.localStorage.getItem("user")));
+    // $("#user-email").text(JSON.parse(window.sessionStorage.getItem("user"))["email"]);
+    console.log(JSON.parse(window.sessionStorage.getItem("user")));
 
-    getStrippenkaart(window.localStorage.getItem("id"));
+    getStrippenkaart(window.sessionStorage.getItem("id"));
 
     function getStrippenkaart(userId) {
         fetch(baseURL + apiBaseURL + "stripcard/" + userId, {
             method: "GET",
             headers: {
-                authorization: "Bearer " + window.localStorage.getItem("access_token")
+                authorization: "Bearer " + window.sessionStorage.getItem("access_token")
             }
             }).then(response => {
                 if (!response.ok) {
@@ -35,7 +35,7 @@ $(document).ready(function (e) {
                         console.log(result);
                         $("#user-strippen").text(result["data"]["strips"]);
                         $("#user-email").text(result["data"]["user"]["email"]);
-                        window.localStorage.setItem("access_token", result["access_token"]);
+                        window.sessionStorage.setItem("access_token", result["access_token"]);
                     })
                 }
             }).catch(error => {
@@ -49,9 +49,9 @@ $(document).ready(function (e) {
     }
 
     function logout() {
-        window.localStorage.removeItem("access_token");
-        window.localStorage.removeItem("id");
-        window.localStorage.removeItem("user");
+        window.sessionStorage.removeItem("access_token");
+        window.sessionStorage.removeItem("id");
+        window.sessionStorage.removeItem("user");
         toggleButtons();
         //go back to home page
         window.location.replace(baseURL + "/dashboard")
