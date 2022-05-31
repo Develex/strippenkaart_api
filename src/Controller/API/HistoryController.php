@@ -41,7 +41,6 @@ class HistoryController extends BaseController
     private $serializer;
 
     public function __construct(
-        \Swift_Mailer $swift_Mailer,
         EntityManagerInterface $em,
         HistoryRepository $repository,
         UserRepository $userRepository,
