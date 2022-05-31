@@ -50,14 +50,13 @@ class PaymentController extends BaseController
     private $serializer;
 
     public function __construct(
-        Swift_Mailer $swift_Mailer,
         EntityManagerInterface $em,
         StripcardRepository $repository,
         PaymentRepository $paymentRepository,
         SerializerInterface $serializer
     )
     {
-        parent::__construct($swift_Mailer);
+        parent::__construct();
         $this->em = $em;
         $this->repository = $repository;
         $this->paymentRepository = $paymentRepository;
