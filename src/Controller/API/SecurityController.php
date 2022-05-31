@@ -184,5 +184,4 @@ class SecurityController extends BaseController
     {
         throw new \Exception("If you see this, something is bad happened");
     }
-
 }

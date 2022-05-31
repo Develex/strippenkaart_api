@@ -3,9 +3,13 @@
 
 namespace App\Controller\API;
 
+use Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * Class BaseController
@@ -15,11 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class BaseController extends AbstractController
 {
-    private $swift_mailer;
+    private $mailer;
 
-    public function __construct(\Swift_Mailer $swift_Mailer)
+    public function __construct(MailerInterface $mailer)
     {
-        $this->swift_mailer = $swift_Mailer;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -78,27 +82,28 @@ class BaseController extends AbstractController
      *
      * @param $email String Email Adress of the recipient.
      * @param $data
-     * @param \Swift_Mailer $swiftMailer
+     * @param MailerInterface $mailer
      * @return bool status of the mailer.
      */
-    public function sendMail($email, $data, \Swift_Mailer $swiftMailer)
+    public function sendMail($email, $data, MailerInterface $mailer)
     {
-        $message = (new Swift_Message("Verfication Email"))
-            ->setFrom('no-reply@collinfranckena.nl')
-            ->setTo($email)
-            ->setBody(
-                $this->renderView(
-                    'emails/register.html.twig',
-                    [
-                        'email' => $email,
-                        'data' => $data
-                    ]
-                ),
-                'text/html'
-            );
-
-        $swiftMailer->send($message);
-
-        return $status = "failed";
+        $email = (new Email())
+            ->from("strippenkaart@delta.icthv.nl")
+            ->to($email)
+            ->subject("Verificatie Registratie")
+            ->html($this->renderView(
+                'emails/register.html.twig',
+                [
+                    'email' => $email,
+                    'data' => $data
+                ]
+            ));
+        try {
+            $mailer->send($email);
+        } catch (TransportExceptionInterface $e) {
+            $this->sendError(500, $e->getDebug());
+            // some error prevented the email sending; display an
+            // error message or try to resend the message
+        }
     }
 }
