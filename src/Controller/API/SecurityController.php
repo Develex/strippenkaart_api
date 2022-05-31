@@ -8,6 +8,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -59,11 +61,11 @@ class SecurityController extends BaseController
      * @Route("/auth/register", name="register", methods={"POST"})
      *
      * @param Request $request
-     * @param \Swift_Mailer $swiftMailer
+     * @param MailerInterface $mailer
      * @return Response
      * @throws \Exception
      */
-    public function register(Request $request, \Swift_Mailer $swiftMailer): Response
+    public function register(Request $request, MailerInterface $mailer): Response
     {
         if ($request)
             $data = json_decode($request->getContent());
@@ -92,7 +94,7 @@ class SecurityController extends BaseController
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->sendMail($data->email, ['code' => $code], $swiftMailer);
+        $this->sendMail($data->email, ['code' => $code], $mailer);
 
         return $this->sendResponse(200, "Account created.");
     }
