@@ -43,7 +43,6 @@ class StripcardController extends BaseController
     private $serializer;
 
     public function __construct(
-        \Swift_Mailer $swift_Mailer,
         EntityManagerInterface $em,
         StripcardRepository $repository,
         UserRepository $userRepository,
