@@ -50,7 +50,7 @@ class StripcardController extends BaseController
         SerializerInterface $serializer
     )
     {
-        parent::__construct($swift_Mailer);
+        parent::__construct();
 
         $this->em = $em;
         $this->repository = $repository;
